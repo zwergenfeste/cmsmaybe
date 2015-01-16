@@ -15,11 +15,11 @@ Quick Overview
 - You only need basic knowledge of HTML in order to use CMSMayBe.
 - There is no publisher or administrator interface to edit pages - Everything is done with add/editing/remove files.
 - To have no admin panel does not mean that a feature is missing - This is how it should be:
-*  Simple
-*  Accessible
-*  Comprehensible
-*  Secure
-*  Fast
+  *  Simple
+  *  Accessible
+  *  Comprehensible
+  *  Secure
+  *  Fast
 
 - Just do with the code what you want, it is free as in freedom.
 - CMSMayBe does not need a database - it is just files.
