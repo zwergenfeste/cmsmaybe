@@ -4,8 +4,8 @@
     <div class="col-md-6 column">
 	<i class="cico c-tg"></i>
 	<h3>Latest Version<br><small>The latest version is [VERSION]</small></h3>
-	<a class="linkbtn btn btn-lg ui button" href="https://github.com/zwergenfeste/cmsmaybe/archive/master.tar.gz" role="button">TAR.GZ<i class="download"></i></a>
-	<a class="linkbtn btn btn-lg ui button" href="https://github.com/zwergenfeste/cmsmaybe/archive/master.zip" role="button">ZIP<i class="download"></i></a>
+	<a class="linkbtn btn btn-lg ui button" href="https://github.com/zwergenfeste/cmsmaybe/archive/[VERSION].tar.gz" role="button">TAR.GZ<i class="download"></i></a>
+	<a class="linkbtn btn btn-lg ui button" href="https://github.com/zwergenfeste/cmsmaybe/archive/[VERSION].zip" role="button">ZIP<i class="download"></i></a>
     </div>
     <div class="col-md-6 column">
 	<i class="cico c-oc"></i>
