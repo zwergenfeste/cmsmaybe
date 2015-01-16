@@ -32,8 +32,6 @@ class TEST extends Core
 
     function from_main()
     {
-	Content::set('[VERSION]',Content::get('[VERSION]')."<a href='".Config::get('basedir')."TEST'>.</a>");
-
 	Config::addRoute('TEST','GET','CLASS','TEST','Hello,World');
 	// strange things like the following work, but you have to respect the order
 	Config::addRoute('TEST/{ARG1}/{ARG2}','GET','CLASS','TEST');
