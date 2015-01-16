@@ -1,0 +1,873 @@
+
+CMSMayBe Manual
+================================================================================
+<div id="toc"></div>
+<br>
+
+
+Preface
+--------------------------------------------------------------------------------
+When it comes to learn something new, there are two approaches to do so in IT. 
+The first is, to have a close look at something (the structure, the code) to be
+able to understand it and use it. The other is, to read about it and to study
+the theoretics throughly, to use it.
+
+CMSMayBe is designed for the first approach. It is open source and small
+enough to save you the time consuming second approach. Therefore, don't 
+hesitate to look into the files.
+
+This documentation is trying to give a little overview of how CMSMayBe works.
+
+Also, thanks to all people how helped with CMSMayBe and the people spending 
+their time to make other open source projects without their work CMSMayBe 
+would not be possible.
+<br><br>
+
+
+Introduction
+--------------------------------------------------------------------------------
+Besides CMSMayBe is easy, open source, file-base and the other blathering... it 
+is coded in PHP. Therefore, to run CMSMayBe you need a web server, PHP and a 
+copy of CMSMayBe - nothing else is needed. Just copy the files to a folder in 
+your web root and edit the `.htaccess` file or make similar rewrite rules to your
+web server to run the requests through the file `index.php`.
+<br><br>
+
+
+License
+--------------------------------------------------------------------------------
+CMSMayBe is published under terms of the AGPL
+
+```
+  CMSMayBe, a file-based micro CMS
+  Copyright (C) 2014  skratte
+
+  This program is free software: you can redistribute it and/or 
+  modify it under the terms of the GNU Affero General Public 
+  License as published by the Free Software Foundation, either 
+  version 3 of the License, or any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
+
+  You should have received a copy of the GNU Affero General Public 
+  License along with this program. 
+  If not, see http://www.gnu.org/licenses/.
+```
+
+__Important:__ Be aware that the full copy of CMSMayBe includes copies of other 
+open source projects which come with their own licenses.
+<br><br>
+
+
+User Manual
+================================================================================
+The next sections explain briefly how you use CMSMayBe.
+<br><br>
+
+
+File Structure
+--------------------------------------------------------------------------------
+Basically, CMSMayBe consists just of the file `index.php`. Therefore, the 
+absolute minimal file structure for CMSMayBe looks like this:
+
+``` bash
+.
+└── index.php
+
+0 directories, 1 file
+```
+
+Running CMSMayBe like this doesn't make much sense, since this will show you 
+only the configured defaults. It is recommend to start with a full copy of 
+CMSMayBe.
+
+When you [download]([BASEURL]/Download) a full copy of CMSMayBe, you will receive a full copy of this
+web site. This site consist for the most part of example files to explain the usage 
+and demonstrate the possibilities of CMSMayBe. This file structure will look 
+like this:
+
+``` bash
+.
+├── content/
+│   ├── Documentation/
+│   │   ├── classes.png
+│   │   └── Documentation.txt
+│   ├── 404.txt
+│   ├── Contact.txt
+│   ├── Donations.txt
+│   ├── Download.txt
+│   └── Home.txt
+├── plugins/
+│   ├── FileMGR/
+│   │   └── ...
+│   ├── MarkDown/
+│   │   └── ...
+│   ├── ThemeSwitcher/
+│   │   └── ...
+│   ├── Minify.plg.php
+│   ├── SENDMAIL.plg.php
+│   ├── TEST.plg.php
+│   └── TwitRSSReader.plg.php
+├── protected/
+│   ├── admin/
+│   │   └── User.txt
+│   ├── guest/
+│   │   └── User.txt
+│   └── user_details.txt
+├── themes/
+│   └── ...
+├── index.php
+├── LICENSE.txt
+└── README.md
+
+30 directories, 132 files
+```
+<br>
+
+
+Installation
+--------------------------------------------------------------------------------
+To run CMSMayBe you need a web server which supports URL rewrites and running 
+PHP scripts. CMSMayBe works with PHP > 5.3.
+
+[Download]([BASEURL]/Download) a copy of CMSMayBe to your web server and copy the 
+files to your web root or link the folder to it. Do something like this:
+
+``` bash
+cd /<path to web root>
+wget https://github.com/zwergenfeste/cmsmaybe/archive/master.tar.gz
+tar -xaf master.tar.gz --strip-components=1
+```
+
+Or with git:
+
+``` bash
+cd /<path to web root>
+git clone https://github.com/zwergenfeste/cmsmaybe .
+```
+
+If the folder you copied the files to is your web root directory and you are 
+using Apache with enabled mod_rewrite, then your are done. Otherwise you have to 
+edit `.htaccess` and/or configure URL rewrite accordingly.
+<br><br>
+
+
+### URL-Rewrite
+CMSMayBe depends on URL rewrite to, handle requests, have semantic/clean URLs
+and manage the access to files.
+
+For CMSMayBe to work with Apache, a `.htaccess` file is included. If mod_rewrite
+is activated and CMSMayBe lies within the web root then everything should work
+right away. The `.htaccess` rewrite configuration looks like this:
+
+``` bash
+# rewrite rules/configuration
+RewriteEngine On
+
+# If index.php lies not within the web root directory you have
+# to set the `RewriteBase` directive. Set the relative path to 
+# the directory that contains index.php and this htaccess file.
+#RewriteBase /subdir/something
+
+# Files starting with a . are just not found, not forbidden.
+# Enforces policy that . files cant be read. Has to be disabled if 
+# the filemgr plugin should be able to read/write all files.
+RewriteRule (^\.|/\.) - [R=404,L]
+
+# Exclude the content and themes directories from redirecting 
+# through index.php
+RewriteRule ^(content|themes)($|/) - [L]
+
+# For anything else direct the requests through index.php
+RewriteRule .* index.php [QSA,L]
+```
+
+If your web server is Lighttpd, then the following rewrite configuration should
+work:
+
+``` bash
+url.rewrite-once = (
+        "^/(content/.*|themes/.*)" => "$0",
+        "^/(.*)" => "/index.php?$1"
+)
+```
+<br>
+
+
+Basic Configuration
+--------------------------------------------------------------------------------
+Configuration of CMSMayBe is done by editing the configuration directives at 
+the beginning of `index.php`. Alternatively you can create a file named 
+`.config.php` next to `index.php` and add configuration directives to it, which 
+will overwrite the configuration in `index.php`. An example `.config.php` could 
+look like this:
+
+``` php
+$configs['sitetitle'] = "Your Site";
+$configs['default_page'] = "Home";
+$configs['theme'] = "YourTheme";
+$configs['default_lang'] = "en";
+$configs['SSL'] = 'yes';
+```
+
+Following, the list of the configuration options you usually want to change. You
+will find them like this in `index.php`. All other options are not covered in this 
+documentation, but are documented in `index.php`.
+
+``` php
+#
+# site title
+#
+$configs['sitetitle'] = "CMSMayBe";
+#
+# default page - page to load first
+#
+$configs['default_page'] = "Home";
+#
+# template folder and .tpl file name
+#
+$configs['theme'] = "AutumnTree";
+#
+# default language
+#
+$configs['default_lang'] = "en";
+#
+# menu stuff
+#
+# configuration of menu and it's css classes
+#
+# return menu as nested divs instead of ul-list
+$configs['div_menu'] = "no";
+#
+# return multiple menus. each top-level in its own ul-list or div
+$configs['multiple_menus'] = "yes";
+#
+# nav_menu_act: set the css class of the selected menu top level: ul or div
+$configs['nav_menu_act'] = "nav navbar-nav active";
+# nav_menu: set the css class of the not selected menu
+$configs['nav_menu'] = "nav navbar-nav";
+# nav_act: the active class for link: li, div or a (a only if has no submenu)
+$configs['nav_act'] = "active";
+# nav_link_cls: add link class: li
+$configs['nav_link_cls'] = "";
+# nav_lnkt_st: thing you put in front of each link-text: inside span
+$configs['nav_lnkt_st'] = "";
+# nav_lnkt_en: thing you put in after of each link-text: inside span
+$configs['nav_lnkt_en'] = "";
+# nav_lvl1_cls: class for first level link if it has sublevel: li or div
+$configs['nav_lvl1_cls'] = "dropdown";
+# nav_lvl+_cls: class for all other link levels if have sublevels: li or div
+$configs['nav_lvl+_cls'] = "dropdown-submenu";
+# nav_subl_lnk_en: thing you put in after a link-text if it has a sublevel: a
+$configs['nav_subl_lnk_en'] = "";
+# nav_subl_lnkt_cls: class for a link-text if it has a sublevel: a
+$configs['nav_subl_lnkt_cls'] = "";
+# nav_lnkt_ao: additional attribute you want to set for a link-text if has sublevel: a
+# e.g.: $configs['nav_lnkt_ao'] = "data-toggle='dropdown'";
+$configs['nav_lnkt_ao'] = "";
+# nav_lnkt_cls: class for link-text if no sublevel: a
+$configs['nav_lnkt_cls'] = "";
+#
+# SSL
+#
+# use HTTPS for auth and force redirects to https
+#
+$configs['SSL'] = 'yes';
+
+```
+<br>
+
+
+Menu
+--------------------------------------------------------------------------------
+With editing the menu file (default: `._MENU_.txt`) you configure the links in
+the menu, one per line. Each line can consist of the following fields, the order
+of the fields is fix:
+
+``` bash
+Level <Space> Name | CSS id | Resource/URL | AUTH[<Role>] ->tpl_ext
+```
+
+Here the description of the fields:
+
+``` bash
+--------------------------------------------------------------------------------
+|  FIELD         |  DESCRIPTION                                                |
+--------------------------------------------------------------------------------
+|  Level         |  Level in * (asterisk) followed by a Space as delimiter.    |
+--------------------------------------------------------------------------------
+|  Name          |  Name of the resource to refer to. A placeholder can be     | 
+|                |  used too.                                                  |
+--------------------------------------------------------------------------------
+|  CSS id        |  The CSS id which will be used for the link. Can be         |
+|                |  omitted and Name will be taken instead.                    |
+--------------------------------------------------------------------------------
+|  Resource/URL  |  Name of the content/resource, intern or extern URL. HTML   |
+|                |  references to links are possible too. A the moment, one    |
+|                |  special link resource name exist:                          |
+|                |  Logout - The reference will always be replaced with        |
+|                |           [BASEURL]/un_auth                                 |
+--------------------------------------------------------------------------------
+|  AUTH[]        |  If set, the link is only shown when authenticated.         |
+|                |  Additionally, the role of the users to which the link is   |
+|                |  shown can be set between the brackets.                     |
+--------------------------------------------------------------------------------
+|  ->tpl_ext     |  Name extension of the template to show for this resource.  |
+--------------------------------------------------------------------------------
+```
+
+A minimal menu line must include a level and a name of a resource, e.g.:
+
+``` bash
+* Link
+```
+
+Following, a few example menu lines:
+
+``` bash
+* Home|home|home
+* Docs|docs|docs->doctpl
+** Sub1|sub1|#sub1
+** Files|files|files
+* Download|dwla|http://some.where/file
+* Member|members|member|AUTH[]
+** Config|config|admin|AUTH[adm]
+** Logout|AUTH[]
+```
+
+CMSMayBe is generating sub level resource links as a part of their top level
+link. For an example, the menu
+
+``` bash
+* Docs|docs|docs->doctpl
+** Files|files|Files
+```
+
+will create the following links:
+
+``` bash
+/docs
+/docs/files
+``` 
+
+This is important to know, if you want to create subfolders to have a more
+clean file structure.
+
+__Important:__
+
+* don't leave menu levels out! e.g.: `** > *****` You will get a strange looking menu.
+
+* a # reference wont get the active class in the menu, since it is no own resource.
+
+* AUTH[] will only hide the menu point! If you want the user to authenticate to see 
+  the page, you have to put the file in the protected folder.
+<br><br>
+
+
+Content
+--------------------------------------------------------------------------------
+In CMSMayBe, simple text files are used to add content and their name is used
+to call/view them. The content itself can be normal text with or without HTML 
+code and with the Markdown plugin, even Markdown syntax is supported.
+
+To add regular content, just add a file in a content folder (default: `content/` 
+or `protected/`) and write some text into it. As an example (If CMSMayBe is 
+installed in the web root and all configuration options, like the content file 
+extension .txt are unchanged), to add a content _Home_ you could do the 
+following:
+
+``` bash
+echo "Hello World" > /<path to web root>/content/Home.txt
+```
+
+This will create a file named `Home.txt` which will add a content _Home_ since it 
+was created in the right place. This content _Home_ can be viewed with the browser 
+over _yoursite.tld/Home_. To view/call a resource you don't need to add it to the 
+menu file.
+
+__Important:__ Content files with a leading `.` in their name can not be 
+called or viewed at all.
+<br><br>
+
+
+### Main content folders
+For CMSMayBe to recognize files as content, they have to be placed inside the 
+two main content folders which, per default, are named `content/` and 
+`protected/`. Content placed inside the folder `content/` can be called/viewed 
+without restrictions (except files with a leading `.` in their filename).
+
+Files placed in the folder `protected/` can only be viewed when authenticated.
+When such a content is called, the authentication form is shown automatically 
+if not authenticated. Per default (if `role_based` is activated), subfolders 
+named like user roles which are placed inside the folder `protected/`, are used 
+to hide content from users without the matching role. Content inside these
+subfolders can only be called or viewed by users with the matching role.
+<br><br>
+
+
+### Subfolders 
+In order to have a clear file structure inside the main content folders, rather
+then just a loose bunch of files, it is possible to create subfolders to put 
+your files in. For CMSMayBe to be able to find the requested file/content
+on itself, subfolders have to be named like the content file (without the 
+extension). To have a deeper folder structure you can create folders following 
+the links generated with the menu top and sub levels or use your completely
+own folder structure, but you have to set the links in the menu manually.
+
+Following, examples to clarify this:
+
+* When you want to create a resource _About_ inside a subfolder which can be 
+viewed over _yoursite.tld/About_, you can do the following:
+
+  ``` bash
+  mkdir /<path to web root>/content/About
+  echo "some text..." > /<path to web root>/content/About/About.txt
+  ```
+
+* If you have a top level menu point named _Docs_ and a sub level called _Files_,
+you can create the following folder structure:
+
+  ``` bash
+  mkdir -p /<path to web root>/content/Docs/Files
+  echo "link to a file..." > /<path to web root>/content/Docs/Files/Files.txt
+  ```
+
+* When you have the menu point _Spec_ you could create the following structure:
+
+  ``` bash
+  mkdir -p /<path to web root>/content/v1/s12/test/some/other/Spec
+  echo "link to a file..." > /<path to web root>/content/v1/s12/test/some/other/Spec/Spec.txt
+  ```
+  
+  To view this content in the browser by clicking on a menu point you have to 
+  set the resource in the menu to /v1/s12/test/some/other/Spec. This resource 
+  can be called with be browser over _yoursite.tld/v1/s12/test/some/other/Spec_
+  without taking any further steps.
+<br><br>
+
+
+### Selection order
+With the possibility to have subfolders or not, there comes also the possibility 
+to have resources/content with the same name. Since CMSMayBe does a limited 
+automatic selection of resources, it could be possible that CMSMayBe find 
+multiple resources which match a request. In this case, CMSMayBe will follow the
+defined selection order: _files outside folders win_. If you have the following 
+file structure inside `content/`: 
+
+``` bash
+.
+├── Docs/
+│   ├── Files/
+│   │   └── Files.txt (3)
+│   └── Files.txt (2)
+└── Files.txt (1)
+
+2 directories, 3 files
+```
+
+and you request _yoursite.tld/Docs/Files_ then CMSMayBe will show you the file
+with the number 1. If file 1 would not exist, then file 2 would be shown. And,
+only if the files 1 and 2 would not exist, file 3 will be shown.
+<br><br>
+
+
+### Placeholder
+Placeholder are the _variables_ of CMSMayBe. The placeholder get replaced by 
+text during page generation. Placeholder inside placeholder a possible. 
+Placeholder look like this:
+
+``` bash
+[SOMEVAR]
+```
+
+#### List of placeholder
+Following, the list of predefined placeholder (__Important:__ Don't forget the
+brackets [] if you use them):
+
+``` bash
+--------------------------------------------------------------------------------
+|  PLACEHOLDER  |  REPLACEMENT                                                 |
+--------------------------------------------------------------------------------
+|  VERSION      |  Version number of CMSMayBe                                  |
+--------------------------------------------------------------------------------
+|  TITLE        |  Site title                                                  |
+--------------------------------------------------------------------------------
+|  LOGO         |  configuration option logo                                   |
+--------------------------------------------------------------------------------
+|  THEME        |  Template name                                               |
+--------------------------------------------------------------------------------
+|  THEMEPATH    |  full path to the template. e.g.: /themes/AutumnTree         |
+--------------------------------------------------------------------------------
+|  THEMEFOLDER  |  path to the themes folder. e.g.: /themes                    |
+--------------------------------------------------------------------------------
+|  BASEURL      |  path to the CMSMayBe installation. e.g.: /                  |
+--------------------------------------------------------------------------------
+|  AGENT        |  browser agent                                               |
+--------------------------------------------------------------------------------
+|  PAGE         |  path to current page                                        |
+--------------------------------------------------------------------------------
+|  PAGENAME     |  current page name                                           |
+--------------------------------------------------------------------------------
+|  USER         |  loged in account name                                       |
+--------------------------------------------------------------------------------
+|  ROLE         |  role(s) of the authenticated account                        |
+--------------------------------------------------------------------------------
+|  NAME         |  Username of the loged in account                            |
+--------------------------------------------------------------------------------
+|  DEFAULTPAGE  |  default page                                                |
+--------------------------------------------------------------------------------
+|  LOGINTEXT    |  Text to show for the menupoint Login                        |
+--------------------------------------------------------------------------------
+|  MSHINT       |  contents of the file defined by 'mshint_file'               |
+--------------------------------------------------------------------------------
+|  PAGESIGN     |  contents of the file defined by 'page_sign_file'            |
+--------------------------------------------------------------------------------
+|  PAGEOPTS     |  contents of the file defined by 'page_options_file'         |
+--------------------------------------------------------------------------------
+|  FOOTER       |  contents of the file defined by 'footer_file'               |
+--------------------------------------------------------------------------------
+|  HEADER       |  contents of the file defined by 'header_file'               |
+--------------------------------------------------------------------------------
+|  AUTHMSG      |  contents of the file defined by 'login_error_file'          |
+--------------------------------------------------------------------------------
+|  AUTHFORM     |  contents of the file defined by 'login_file'                |
+--------------------------------------------------------------------------------
+|  MENU         |  the generated menu                                          |
+--------------------------------------------------------------------------------
+|  TEMPLATE     |  contents of the template file                               |
+--------------------------------------------------------------------------------
+
+```
+<br>
+
+
+### Includes
+Includes are basically the same as placeholder and are added like them to the
+content. Includes have the special abilities to only be shown/replaced on certain 
+pages and to have per request alternating content. Includes also overwrite 
+placeholder. To add a include, you have to write it to the file `includes_file`
+(default: `._INCLUDES_.txt`). The easiest way to explain you how to make includes
+is by an example includes file:
+
+``` bash
+[SHORTBANNER]{*}Some Text...#AND#...other text#END#
+
+[BANNER]
+{*}
+Text to show
+#AND#
+other things to ...
+#AND#
+and again a text
+#END#
+
+[BANNER]
+{Home,News}
+Some link to...
+#END#
+```
+
+The example shows the following:
+
+* An include consists of:
+  * the placeholder (`[SOMETHING]`)
+  * the placement variable (`{Page1,Page2}`, pages separated by `,`, `*` is 
+     used for all pages)
+  * some content
+  * the delimiter (`#AND#` and `#END#`)
+  <br><br>
+* Includes can be written in one line
+
+* Multiple contents per include are possible. With the delimiter `#AND#` they 
+are separated.
+
+* Multiple same includes are possible. An include shown on all pages (`*`) has
+to come first.
+
+* With the delimiter `#END#` includes are finished. If not set the following
+text will be seen as part of the include.
+<br><br>
+
+
+Languages
+--------------------------------------------------------------------------------
+Multiple languages per site are possible. There are two possible ways to have
+a multilingual site. In both of this ways, language selection is managed by the
+browser. The first in the browser configured matching language is selected and
+shown. If no matching browser language is found, the default language will be
+displayed.
+
+### Language file extension
+Language file extensions are the default way to have multilingual sites and 
+works without any configuration changes. Just add multiple content files with 
+browser style language file extensions. File names should look like this:
+
+``` bash
+/<path to web root>/content/Home/Home.txt
+/<path to web root>/content/Home/Home.txt.en-us
+/<path to web root>/content/Home/Home.txt.es
+```
+
+If there are files, like in the example above, without an language extension, 
+CMSMayBe will see them as the files for the default language. 
+<br><br>
+
+
+### Language based subfolders
+To work with language based subfolders you have to activate the configuration
+option `lang_subfolders` and create browser style language subfolders to the 
+main content folders. After activating `lang_subfolders` language subfolders 
+are expected and no files outside language subfolders are found. Afterwards, 
+the path to the content _Home_ should look like the following examples:
+
+``` bash
+/<path to web root>/en/content/Home/Home.txt
+```
+``` bash
+/<path to web root>/jp/content/Home/Home.txt
+```
+``` bash
+/<path to web root>/en-us/content/Home/Home.txt
+```
+<br>
+
+
+Authentication
+--------------------------------------------------------------------------------
+Users and roles are configured in the file `acc_file` (default: 
+`._ACCOUNTS_.txt`). One account per row. The fields in the file are defined 
+over the first row which starts with `#>`. Per default, there are four fields 
+(USER, PW, ROLE, NAME) delimited by `|`. They must always be present. The order 
+of the fields can be change and new fields can be added. After a user 
+authenticates, all fields, except the PW, are present as a session variable in 
+the form of account_<field name>, e.g. `account_NAME` or `account_ROLE`.
+
+For password hashes, CMSMayBe uses php's standard crypt() function. To create a
+password you can use something like the following command:
+
+``` bash
+mkpasswd -m sha-512 <some password>
+```
+
+and add the output to the account row as password. A standard account row look
+like this:
+
+``` bash
+test|$6$GGe7DVdC4Is$RknW0TgNZGDKJuzpZ4FqLQt/NbjocefplKZRoHZ7tUiunuF2EpNgr.rcA05SDiQYD94RxFEFtIokORurpj119/|test|Tester
+```
+<br>
+
+
+Themes
+--------------------------------------------------------------------------------
+As with most other CMS, it is possible to have different themes. The few themes
+included in the full copy of CMSMayBe, can be tried out by clicking 
+<a href='#' id='TSopen'>here</a> or on the _Change Theme_ button on the right
+side at the top of the page.
+
+Themes in CMSMayBe are HTML files with placeholders. A easy template would look
+like this (The placeholder don't have this trailing dots. It is just for 
+displaying purposes):
+
+``` bash
+<!DOCTYPE html>
+<html>
+    <head>
+	<title>[TITLE.]</title>
+    </head>
+    <body>
+	<header>
+	    [HEADER.]
+	</header>
+	<nav>
+	    [MENU.]
+	</nav>
+	<article>
+	    [CONTENT.]
+	</article>
+	<footer>
+	    [FOOTER.]
+	</footer>
+    </body>
+</html>
+```
+
+To create a hole new theme, for example a theme named _newTheme_, you simply
+create a folder named _newTheme_ inside the themes folder (default: `themes/`)
+and a file named `newTheme.tpl` inside this folder. Also, theme specific 
+subfolders are not necessary, it is recommended to create them. After putting 
+some content into the theme file you just change the `theme` configuration 
+option to _newTheme_ and CMSMayBe will display the new theme. 
+
+If you added a template name extension to a menu point, for example _spec_, and
+your theme is named _newTheme_, then CMSMayBe is expecting a file named
+`newTheme_spec.tpl` which it want to show for this menu point/resource. If the
+file is not found, it will show the normal theme.
+<br><br>
+
+
+Development
+================================================================================
+CMSMayBe was build as easy as possible, not only for developers, but also for
+the administrators of the site/server. Therefore, not all developers paradigm
+were followed. Here a list of things you may like or won't like at all:
+
+* The rule 'One class per file' is not met
+* Namespaces are not used
+* MVC is not fully implemented, although one could argue about that
+* No monolithic objects get passed around
+<br><br>
+
+Suggestions on how to do stuff better/simpler are always welcome! Just let us 
+know.
+<br><br>
+
+
+Structure
+--------------------------------------------------------------------------------
+Following, the sequence by which CMSMayBe works:
+
+1. Class Core gets loaded
+2. PHP session is started and configuration options are set
+3. Classes are loaded as static vars of class Config
+4. Plugins are loaded as vars of class Plugin
+5. Default contents are set
+6. Requests are handled and main content gets set
+7. Page is generated (placeholder replaced) and displayed
+<br><br>
+
+The class structure looks like this:
+
+<p><img class="img-responsive" src="[PAGEURL]/classes.png"></p>
+<br>
+
+
+Plugins
+--------------------------------------------------------------------------------
+For creating a plugin you have to add a file with the extension _.plg.php_ to 
+the plugin folder (default: `plugins/`) and a class in it with the same name as 
+the file. For example, if you want to create the plugin _testplugin_, add a file
+like this:
+
+``` bash
+touch /<path to web root>/plugins/testplugin.plg.php
+```
+
+The minimal content of this file should look like this:
+
+``` php
+<?php
+
+class testplugin extends Core 
+{
+
+}
+
+?>
+```
+
+The plugin classes are loaded as properties of the class `Plugin` and can be
+accessed directly from another plugin. In the case of _testplugin_ over:
+
+``` php
+Config::$Plugin->testplugin
+```
+
+Per default, the following two properties are created within a plugin class:
+
+* name - the name of the class
+* path - the relative path to the plugin file
+<br><br>
+
+A the moment, in CMSMayBe plugins you can add three different functions to do
+stuff. These functions are getting called on different stages of the CMSMayBe
+sequence. These can be considered as the controllers. The functions are:
+
+* from_main - This is called after everything is fully loaded and before any 
+actions are taken. With it you can change all configurations and the call from
+the browser.
+
+* from_router - Gets called as a part of the browser request handling and is
+meant to display content other then that from a standard resource. An array 
+with the request paramenters is passed to the function and its output is added 
+as content.
+
+* from_after_content - The function is called after nearly all work is done.
+Only things left to do are replacing the placeholder and display the page.
+<br><br>
+
+Perhaps, it could be necessary to load certain plugins before others, therefore,
+it is possible to add a priority to plugins. The default priority is 100. To 
+change the default priority simply add the following attribute to the plugin 
+class:
+
+``` php
+$priority = 99;
+```
+
+In addition, it is also possible to load plugins only when a user is 
+authenticated or even only if the user has the right role. Again, this is
+done by adding attributes to the plugin class. As an example, to load a
+plugin only for a user with the role 'admin' you would have to add the following
+attributes to the plugin class:
+
+``` php
+$auth = TRUE;
+$role = 'admin';
+```
+
+As an overview of what can be done, have a look at the following code of the
+TEST plugin or have a look at the other plugins.
+
+``` php
+<?php
+
+class TEST extends Core 
+{
+    public $priority = 100;
+    public $auth = FALSE;
+    public $role = 'admin';
+
+    function from_router($route)
+    {
+        $output = "<h3>You called the test plugin!</h3>\n";
+        $output .= "<p>This plugin shall help you to understand how plugins in CMSMayBe work - how to call them and how to pass options.</p>\n";
+        $output .= "<p>You can call it over the following URIs:</p>\n";
+        $output .= "<p><ul><li>your.domain/TEST</li><li>your.domain/TEST/arg1</li><li>your.domain/TEST/arg1/arg2</li></ul></p>\n";
+        $output .= "<p>For more information (on a fresh installation!) click <a href='".Config::get('basedir')."Documentation'>here</a> else go to <a href='https://cmsmaybe.org/Documentation'>cmsmaybe.org/Documentation</a></p>\n";
+        $output .= "<p><b>Output from the test plugin:</b></p>";
+
+        if($route['URI'] == "TEST")
+        {
+            $output .= "<pre>".str_replace(","," ",$route['OPTS'])."</pre>"; 
+        }
+
+        if(preg_match("/^TEST\/{ARG1}/",$route['URI']))
+        {
+            $output .= "<pre>";
+            $output .= print_r($route,true);
+            $output .= "</pre>";
+        }
+
+        return $output;
+    }
+
+    function from_main()
+    {
+        Content::set('[VERSION.]',Content::get('[VERSION.]')."<a href='".Config::get('basedir')."TEST'>.</a>");
+
+        Config::addRoute('TEST','GET','CLASS','TEST','Hello,World');
+        // strange things like the following work, but you have to respect the order
+        Config::addRoute('TEST/{ARG1}/{ARG2}','GET','CLASS','TEST');
+        Config::addRoute('TEST/{ARG1}','GET','CLASS','TEST');
+    }
+}
+
+?>
+```
+<br>
+
+

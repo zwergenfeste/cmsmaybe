@@ -1,0 +1,187 @@
+
+#content {
+  margin: 0px 30px 40px 30px;
+}
+
+#footer {
+  margin: 0 10px;
+  padding: 0 10px;
+  padding-top: 19px;
+  color: #777;
+  border-top: 1px solid #e5e5e5;
+  margin-bottom: 30px;
+}
+
+#logo {
+  float: left;
+  margin-left: -130px;
+  padding-top: 30px;
+  margin-bottom: -80px;
+}
+
+#pa-login {
+  min-width: 320px;
+}
+
+#pa-usrinfo {
+  display: none;
+}
+
+.panel-heading {
+  background: none !important;
+}
+
+#scrollup {
+  width: 50px; 
+  height: 50px;
+  text-align: center;
+  background: rgba(200,200,200,0.5);
+  font-weight: bold;
+  color: #444444;
+  text-decoration: none;
+  position:fixed;
+  bottom: 20px;
+  right: 15px;
+  display:none;
+  cursor: pointer; 
+  border-radius: 9px;
+  line-height: 52px;
+  z-index: 8001;
+}
+
+#scrollup:before {
+  content:'\f01b';
+  font-family: fa;
+  font-size: 30px;
+}
+
+.toc-h1 {
+  padding: 4px;
+  margin-top: 10px;
+}
+
+.toc-h2 {
+  margin-left: 20px;
+  font-size: 95%;
+}
+
+@media (max-width: 768px) {
+  #navcol {
+    padding-bottom: 20px;
+  }
+
+  #logo {
+    float: left;
+    margin-left: 20px;
+    padding-top: 20px;
+    margin-bottom: -90px;
+  }
+
+  .iban {
+    margin-left: 0px;
+  }
+
+  #content {
+    margin: 0px 0px 40px;
+  }
+
+  .jumbotron {
+    margin-top: 20px;
+    padding-top: 10px;
+  }
+
+  .navbar-collapse {
+    border: none;
+    box-shadow: none;
+  }
+
+  .navbar-nav {
+    margin: 0px; 
+  }
+
+  .dropdown-menu {
+    display: block;
+    position: static; 
+    width: auto;
+    float: none;
+    margin-top: 0; 
+    border: 0;
+    background-color: transparent;
+    padding: 0px;
+    box-shadow: none;
+  }
+
+  .dropdown-menu > li > a {
+    color: #999999;
+  }
+
+  .navbar-nav .dropdown .dropdown-menu > li > a:hover,
+  .navbar-nav .dropdown .dropdown-menu > li > a:focus {
+    color: #f5f5f5;
+    text-decoration: none;
+    background-color: #262626;
+  }
+
+  .navbar-nav .dropdown .dropdown-menu > .active > a,
+  .navbar-nav .dropdown .dropdown-menu > .active > a:hover,
+  .navbar-nav .dropdown .dropdown-menu > .active > a:focus {
+    color: #fff;
+    text-decoration: none;
+    background-color: #080808;
+    outline: 0;
+  }
+  
+  .navbar-collapse {
+    max-height: none;
+  }
+
+  .nav {
+    width: 100%;
+  } 
+
+  .navbar-toggle {
+    background: #cccccc;
+  }
+
+  .navbar-toggle .icon-bar {
+    background: #ffffff;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 760px;
+  }
+
+  .header, .footer {
+    margin-right: 15px;
+    margin-left: 15px;
+  }
+
+  #nav {
+    padding: 30px 0 0 0;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-bottom: 1px solid #e5e5e5;
+  }
+
+  .nav-pills {
+    float: left;
+    margin-right: 3px;
+  }
+
+  .jumbotron {
+    margin: 30px 0px 10px 0px;
+  }
+
+  .cols {
+    padding: 0px 30px;
+  }
+
+  .dropdown:hover .dropdown-menu {
+    display: block;
+    margin-top: 0px;
+    margin-left: 2px;
+  }
+}
+

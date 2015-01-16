@@ -1,0 +1,3 @@
+
+<div>[NAME], you are authenticated as user [USER]. This account has role(s): [ROLE]</div>
+

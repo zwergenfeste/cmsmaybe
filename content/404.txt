@@ -1,0 +1,3 @@
+<br><br>
+<div class="alert alert-danger" role="alert"><b>ERROR 404:</b> The requested resource [PAGE] does not exist!</div>
+<br>

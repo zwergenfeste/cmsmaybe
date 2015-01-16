@@ -1,0 +1,155 @@
+
+#TSbtn {
+  position: absolute;
+  color: #999999;
+  right: 6%;
+  top: 0px;
+  z-index: 6000;
+  background: #eeeeee;
+  border-radius: 0 0 4px 4px;
+  opacity: 0.5;
+  cursor: pointer;
+  display: block;
+  font-size: 14px;
+  padding: 0 9px 4px 2px;
+}
+
+.TScaret {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 8px;
+  vertical-align: middle;
+  border-top: 4px solid;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+}
+
+#TSback {
+  position: fixed;
+  background: rgba(0,0,0,0.6);
+  display: none;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 6000;
+}
+
+#TSwrap {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  z-index: 6001;
+  color: #000000;
+  padding: 5%;
+  display: none;
+}
+
+#TSform {
+  background-color: #ffffff;
+}
+
+.TSclose {
+  cursor: pointer;
+  position: relative;
+  top: 10px;
+  right: 10px;
+  float: right;
+  font-family: serif;
+  font-size: 18px;
+  font-weight: normal;
+  line-height: 0px;
+  color: #fff;
+  background: #000;
+  border: 2px solid #fff;
+  border-radius: 35px;
+  padding: 12px 5px;
+  filter: alpha(opacity=70);
+  opacity: 0.7;
+  box-shadow: 0 3px 9px rgba(0,0,0,0.5);
+}
+.TSclose:hover,
+.TSclose:focus {
+  text-decoration: none;
+  filter: alpha(opacity=100);
+  opacity: 1;
+}
+.TSclose:before {
+  content: '\00d7';
+}
+
+#TStitle {
+  padding: 25px 25px 10px 25px;
+}
+
+#TSbody {
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+.TSradio {
+  margin: 10px;
+  padding: 10px;
+  display: inline-block;
+  border: 1px solid #cccccc;
+  width: 210px;
+  cursor: pointer;
+}
+
+.TSradio span {
+  display: block;
+  padding: 5px;
+}
+
+.TSradio img {
+  height: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.TSact {
+  border: 1px solid #333333;
+  box-shadow: 0px 0px 3px #000000;
+}
+
+#TSwaiter {
+  width: 100%;
+  height: 200px;
+  background-image: url('loader.gif');
+  background-repeat: no-repeat;
+  background-position: center; 
+}
+
+
+@media ( max-width: 768px ) {
+  #TSwrap {
+    right: 0px;
+    min-height: 100%;
+    padding: 0;
+  }
+}
+
+@media ( min-width: 768px ) {
+  #TSform {
+    background-clip: padding-box;
+    border: 1px solid #999999;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 6px;
+    outline: none;
+    -webkit-box-shadow: 0 3px 9px rgba(0,0,0,0.5);
+    box-shadow: 0 3px 9px rgba(0,0,0,0.5);
+  }
+
+  .TSclose {
+    top: -30px;
+    right: -30px;
+  }
+
+  #TSbody {
+    padding: 10px 45px 45px 45px;
+  }
+}
+

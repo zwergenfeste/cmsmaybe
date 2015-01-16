@@ -1,0 +1,117 @@
+[MAINBANNER]
+{Home}
+<div id="mainbanner" class="row">
+    <div class="jumbotron ui huge message">
+	<h1>CMSMayBe <small>Version [VERSION]</small></h1>
+	<p><i>A open source micro "CMS" helping you build simple sites without the overhead of a database!</i></p>
+    </div>
+</div>
+#AND#
+<div id="mainbanner" class="row">
+    <div class="jumbotron ui huge message">
+	<h1>CMSMayBe <small>Version [VERSION]</small></h1>
+	<p><i>A open source file-based micro "CMS"</i></p>
+    </div>
+</div>
+#END#
+
+[HEADTITLE]
+{*}
+CMSMayBe - A open source file based micro CMS
+#END#
+
+[METADESCRIPTION]
+{*}
+<meta name="description" content="CMSMayBe - A open source file-based micro CMS helping you 
+build simple sites and display content without the overhead of a database! Just add / edit / remove
+files. It tries to be simple, accessible, comprehensible, secure and fast.">
+#END#
+
+[METAKEYWORD]
+{*}
+<meta name="keyword" content="CMSMayBe, CMS, file based, flat file, micro CMS, fast, easy, slim, 
+open source file-based micro CMS, minimalistic, no-db, open source, html, css, php">
+#END#
+
+[FOOTER]
+{*}
+<span class="powered">Powered by cmsmaybe-[VERSION]</span>
+#END#
+
+[HEADER]
+{*}
+<div class="page-header clearfix">
+    <a id="logo" class="pull-left" href="[BASEURL]"><i class="logo"></i><span>[TITLE]</span></a>
+</div>
+#END#
+
+[PAGEOPTS]
+{*}
+<br>
+<div class="po_wrap">
+  <div class="po_icons">
+    <a class="pogit tooltips" data-toggle="tooltip" data-placement="top" href="https://github.com/zwergenfeste/cmsmaybe" title="Fork on GitHub" target="_blank"><span>Fork on GitHub</span></a>
+    <a class="pocmb tooltips" data-toggle="tooltip" data-placement="top" href="https://cmsmaybe.org" title="Visit the project site" target="_blank"><span>CMSMayBe</span></a>
+    <a class="pofla tooltips" data-toggle="tooltip" data-placement="top" href="https://flattr.com/submit/auto?user_id=zerg&url=http://cmsmaybe.org&title=CMSMayBe&description=A%20minimalistic%20CMS%20helping%20you%20build%20simple%20sites%20without%20a%20database!&language=en_GB&tags=cms,programming&category=text" title="Flattr this" target="_blank"><span>Flattr</span></a>
+    <a class="potwi tooltips" data-toggle="tooltip" data-placement="top" href="https://twitter.com/CMSMayBe" title="Follow on Twitter" target="_blank"><span>Twitter</span></a>
+    <a class="porss tooltips" data-toggle="tooltip" data-placement="top" href="https://cmsmaybe.org/RSS" title="Read the RSS feed" target="_blank"><span>RSS</span></a>
+  </div>
+  <div class="po_arrow"></div>
+</div>
+#END#
+
+[MSHINT]
+{*}
+<div class="mshint alert alert-danger alert-dismissible pull-right" role="alert">
+    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <b>You are using Microsoft products!</b><br>
+    <small>[AGENT]</small>
+</div>
+#END#
+
+[AUTHMSG]
+{*}
+<div class="alert alert-danger ui error message" role="alert"><b>ERROR2:</b> username or password is invalid!</div>
+#END#
+
+[AUTHFORM]
+{*}
+<br>
+
+[AUTHMSG]
+
+<div class="two column stackable ui page grid">
+<div id="pa-login" class="col-md-4 col-md-offset-3 col-sm-6 col-sm-offset-2 ui fluid column">
+    <div class="panel panel-default">
+	<div class="panel-heading ui top attached header segment">
+	    <h3 class="panel-title">Please sign in</h3>
+	</div>
+	<div class="panel-body ui form bottom attached segment">
+	    <form accept-charset="UTF-8" role="form" action="[PAGE]/auth" method="post">
+                <fieldset>
+		    <div class="form-group field">
+			<input id="accInput" class="form-control" placeholder="Account" name="account" type="text" required>
+		    </div>
+		    <div class="form-group field">
+			<input class="form-control" placeholder="Password" name="password" type="password" value="" required>
+		    </div>
+		    <input class="btn btn-lg btn-success btn-block ui fluid positive button" type="submit" value="Login">
+		</fieldset>
+	    </form>
+	</div>
+    </div>
+</div>
+<div id="pa-usrinfo" class="col-md-3 col-sm-5 column">
+    <div class="panel panel-default ui fluid segment">
+	Following two test accounts exist:
+	<table>
+	<tr><th>user</th><th>password</th></tr>
+	<tr><td>admin</td><td>admin</td></tr>
+	<tr><td>demo</td><td>demo</td></tr>
+	</table>
+    </div>
+</div>
+</div>
+<br>
+#END#
+

@@ -1,0 +1,41 @@
+<div class="home-wrap">
+    <div class="ui two column grid row toU">
+	<div class="cols col-sm-1 col-sm-offset-1 three wide column h-hid">
+	    <i class="hico h-sh"></i>
+	    <i class="hico h-ed tler"></i>
+	    <i class="hico h-ro tlest"></i>
+	</div>
+	<div class="cols col-sm-8 col-sm-offset-1 twelve wide column h-tid">
+	    <h3>to Users</h3>
+	    <p>"All" what CMSMayBe does is ease building a website.</p>
+	    <p>CMSMayBe simply displays text from files.</p>
+	    <p>With the templates elements are arranged and some styles are added.</p>
+	    <p>You only need basic knowledge of HTML in order to use CMSMayBe.</p>
+	    <p>There is no publisher or administrator interface to edit pages - Everything is done with add/editing/remove files.</p>
+	    <p>To have no admin panel does not mean that a feature is missing - This is how it should be:</p>
+	    <ul>
+		<li>Simple</li>
+		<li>Accessible</li>
+		<li>Comprehensible</li>
+		<li>Secure</li>
+		<li>Fast</li>
+	    </ul>
+	</div>
+    </div>
+    <div class="ui two column grid row toD">
+	<div class="cols col-sm-1 col-sm-offset-1 three wide column h-hid">
+	    <i class="hico h-oc"></i>
+	    <i class="hico h-ndb2 tler"><i class="h-ndb"></i></i>
+	    <i class="hico h-co tlest"></i>
+	</div>
+	<div class="cols col-sm-8 col-sm-offset-1 twelve wide column h-tid">
+	    <h3>to Developers</h3>
+ 	    <p>Just do with the code what you want, it is free as in freedom and open source.</p>
+	    <p>CMSMayBe does not need a database - it is just files.</p>
+	    <p>Templates are plain HTML files with content tags/placeholders.</p>
+	    <p>CMSMayBe has its own router and does this REST-thingy.</p>
+	    <p>It has a role based authentication system.</p>
+	    <p>Something like plugins exist. For maximum flexibility they can be registered in different ways.</p>
+	</div>
+    </div>
+</div>

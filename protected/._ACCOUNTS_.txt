@@ -1,0 +1,4 @@
+#>USER|PW|ROLE|NAME
+demo|$6$6bIdEABXU2mAfK$YgLF/PJWBKalLCPIfSSDTAaF0LtR8sVEwmysopcqipIT1YW4AziQ78v2nB3U5nktL0fYPLym37CyXwmAKZeoX/|guest|Guest
+admin|$6$LrZ4MfTRW$OgHfgllmA6X5naTZG68Vua1w5lrlGL71Y3PfHcdEsPaEW/QVyLdIS8wPoBxJOClmPYatqjilepKTByungdhXU.|admin,guest|Admin
+test|$6$GGe7DVdC4Is$RknW0TgNZGDKJuzpZ4FqLQt/NbjocefplKZRoHZ7tUiunuF2EpNgr.rcA05SDiQYD94RxFEFtIokORurpj119/|test|Tester

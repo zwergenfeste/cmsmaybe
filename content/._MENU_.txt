@@ -1,0 +1,71 @@
+##
+## Each line can consist of the following fields, the order of the fields is fix:
+##
+##   Level <Space> Name | CSS id | Resource/URL | AUTH[<Role>] ->tpl_ext
+##
+## Here the description of the fields:
+##   --------------------------------------------------------------------------------
+##   |  FIELD         |  DESCRIPTION                                                |
+##   --------------------------------------------------------------------------------
+##   |  Level         |  Level in * (asterisk) followed by a Space as delemiter.    |
+##   --------------------------------------------------------------------------------
+##   |  Name          |  Name of the resource to refere to. A placeholder can be    | 
+##   |                |  used too.                                                  |
+##   --------------------------------------------------------------------------------
+##   |  CSS id        |  The CSS id which will be used for the link. Can be         |
+##   |                |  omitted. Name will be taken instead.                       |
+##   --------------------------------------------------------------------------------
+##   |  Resource/URL  |  Name of the content file, intern or extern URL. HTML       |
+##   |                |  references to links are possible too. A the moment, one    |
+##   |                |  special link resource names exist:                         |
+##   |                |  Logout - The reference will always be replaced with        |
+##   |                |           [BASEURL]/un_auth                                 |
+##   --------------------------------------------------------------------------------
+##   |  AUTH[]        |  If set, the link is only shown when authenticated.         |
+##   |                |  Additionally the role of the users to which the link is    |
+##   |                |  shown can be set between the brackets.                     |
+##   --------------------------------------------------------------------------------
+##   |  ->tpl_ext     |  Name extension of the template to show for this resource.  |
+##   --------------------------------------------------------------------------------
+##
+## A minimal menu line must include a level and a name of a resource, e.g.:
+##
+##   * Link
+##
+## Following, a few example menu lines:
+##
+##   * Home|home|home
+##   * Docs|docs|docs->doctpl
+##   ** Sub1|sub1|#sub1
+##   * Download|dwla|http://some.where/file
+##   * Member|members|member|AUTH[]
+##   ** Config|config|admin|AUTH[adm]
+##   ** Logout|AUTH[]
+##
+## Important:
+## - dont leave menu levels out! e.g.: `** > *****` You will get a strange looking menu.
+## - a #-link reference wont get the active class in the menu since it is no own resource
+## - AUTH[] will only hide the menu point! If you want the user to authenticate to see 
+##   the page, you have to put the file in the protected folder.
+##
+##
+
+* CMSMayBe|home|Home
+
+* News|news
+
+* Documentation|docs
+** User Manual|usage|#toc-user-manual
+** Development|dev|#toc-development
+
+* Download|download
+
+* Contact
+** Project Page|projectpage|https://cmsmaybe.org
+** Donations / Flattr|flattr|Donations
+
+* [LOGINTEXT]|login|user_details
+** File Manager|filemgr|[BASEURL]/filemgr|AUTH[admin]->admin
+** User Info|usrinfo|User|AUTH[]
+** Logout|AUTH[]
+

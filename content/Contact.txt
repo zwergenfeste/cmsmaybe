@@ -1,0 +1,58 @@
+<div class="ctcols ui three column grid row center aligned">
+    <div class="col-md-4 column">
+	<i class="cico c-ml"></i>
+	<h1>Contact</h1>
+	<p>Any feedback or hints on how to do stuff better is always welcome. Help is greatly appreciated.</p>
+	<a class="linkbtn btn btn-lg ui button" href="mailto:info@cmsmaybe.org">Info@</a>
+    </div>
+
+    <div class="col-md-4 column">
+	<i class="cico c-sp"></i>
+	<h1>Support</h1>
+	<p>Simply write a mail if you need any help and the documentation is not helping you.</p>
+	<a class="linkbtn btn btn-lg ui button" href="mailto:support@cmsmaybe.org">Support@</a>
+    </div>
+
+    <div class="col-md-4 column">
+	<i class="cico c-gh"></i>
+	<h1>GitHub</h1>
+	<p>For issues, other CMSMayBe-related problems or anything else, post it on GitHub.</p>
+  	<a class="linkbtn btn btn-lg ui button" href="http://github.org/zwergenfeste/cmsmaybe" target="_blank">GitHub</a>
+    </div>
+</div>
+
+<br>
+<p>... or send us a short message.</p>
+
+<div class="col-md-offset-3 col-md-6 ui page grid">
+  <div class="row">
+    <div class="column">
+      [MAILERMSG]
+    </div>
+  </div>
+
+  <div class="row">
+    <form id="contactform" class="ui form segment column" role="form" method="post" action="Contact/sendmail">
+	<div id="waiter"></div>
+	<fieldset>
+	    <input type="hidden" name="CFsubject" value="[CMSMayBe: Contact-Form]">
+	    <div class="form-group field">
+		<input type="text" class="form-control" name="CFname" maxlength="80" placeholder="Name" required pattern=".{3,}" title="min. 3 characters">
+	    </div>
+	    <div class="form-group field">
+		<input type="email" class="form-control" name="CFemail" maxlength="150" placeholder="EMail Adress" required>
+	    </div>
+	    <div class="form-group field">
+		<input type="text" class="form-control" name="CFphone" maxlength="50" placeholder="Phone Number" pattern="\d*" title="Numbers only">
+	    </div>
+	    <div class="form-group field">
+		<textarea type="text" class="form-control" name="CFmesg" maxlength="300" rows="5" placeholder="Message" required></textarea>
+	    </div>
+	    <div class="form-group field">
+		<input type="submit" class="btn btn-default ui button" value="Submit">
+	    </div>
+	</fieldset>
+    </form>
+  </div>
+</div>
+

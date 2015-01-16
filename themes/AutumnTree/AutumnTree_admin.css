@@ -1,0 +1,29 @@
+
+.dropdown .dropdown-menu > .active > a:focus,
+.active > li > a:focus,
+.navbar-inverse .navbar-nav > .active > a:focus,
+li.dropdown-submenu > a:focus,
+li.dropdown.active > a, 
+li.dropdown.active > a:hover,
+li.dropdown > a:focus {
+  background-color: #709060;
+}
+
+.navbar-inverse {
+  background: #709060;
+}
+
+.dropdown-menu {
+  background: #709060; /* #a8d55a; /* #63f03a; /* #7fac50; /* #73b52c; */
+  border: none;
+  width: 180px;
+  border-radius: 0;
+  padding: 0;
+}
+
+.form-control:focus {
+  border-color: rgba(240,150,58,0.6);
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(240,150,58,0.6);
+          box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(240,150,58,0.6);
+}
+

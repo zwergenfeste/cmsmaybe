@@ -1,0 +1,27 @@
+<div id="dons" class="col-md-offset-2 col-md-8 ui page grid">
+    <h1>Donations</h1>
+    <p>
+	If you like CMSMayBe, we would feel flattered if you would 
+	<a class="flattr" href="https://flattr.com/submit/auto?user_id=zerg&url=http://cmsmaybe.org&title=CMSMayBe&description=A%20minimalistic%20CMS%20helping%20you%20build%20simple%20sites%20without%20a%20database!&language=en_GB&tags=cms,programming&category=text" target="_blank"><img src="https://api.flattr.com/button/flattr-badge-large.png" alt="flattr this!"></a>
+    </p>
+
+    <p>
+	Naturally, some other donations are always welcome too. You could make donations to our 
+    	<a class="paypal" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=J99QVH6NT3RUY" target="_blank"><img src="https://www.paypalobjects.com/webstatic/en_US/btn/btn_pponly_142x27.png" alt="PayPal"></a>
+	account or donate something directly to our bank account:
+    </p>
+
+    <p>
+	<span class="iban">
+	    <span class="tooltips" data-toggle="tooltip" data-placement="bottom" title="PostFinance AG<br>Mingerstrasse 20<br>3030 Bern<br>Schweiz">BIC: &nbsp;POFICHBEXXX</span>
+	    <br>
+	    <span class="tooltips" data-toggle="tooltip" data-placement="bottom" title="Zwergenfeste<br>3011 Bern">IBAN: &nbsp;CH05 0900 0000 6060 4111 8</span>
+	</span>
+    </p>
+
+    <p>... But we will keep up our work anyway.</p>
+
+    <br>
+    <h3 class="thanks">Many thanks to all donators! You are the greatest!</h3>
+    <i class="cico c-tu"></i>
+</div>
