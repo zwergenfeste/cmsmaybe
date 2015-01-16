@@ -1,0 +1,47 @@
+# disable dir listing
+Options -Indexes
+
+# configure error page
+# change according to Basedir
+ErrorDocument 404 /404
+
+# turn on expires and set default to 0
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresDefault A0
+
+    # set expires for static files to 1 year
+    <FilesMatch "\.(flv|ico|pdf|avi|mov|ppt|doc|mp3|wmv|wav)$">
+	ExpiresDefault A29030400
+	# fixes favicon/yslow warning
+	ExpiresByType image/ico "access plus 1 years"
+    </FilesMatch>
+</IfModule>
+
+# turn off apache based file validation for caches/browsers so
+# they relay on CMSMayBe headers
+<IfModule mod_headers.c>
+    Header unset ETag
+</IfModule>
+FileETag None
+
+# rewrite rules/configuration
+RewriteEngine On
+
+# If index.php lies not within the web root directory you have
+# to set the `RewriteBase` directive. Set the relative path to 
+# the directory that contains index.php and this htaccess file.
+#RewriteBase /
+
+# Files starting with a . are just not found, not forbidden.
+# Enforces policy that . files can't be read. Has to be disabled if 
+# the filemgr plugin should be able to read/write all files.
+RewriteRule (^\.|/\.) - [R=404,L]
+
+# Exclude the content and themes directories from redirecting 
+# through index.php
+RewriteRule ^(content|themes)($|/) - [L]
+
+# For anything else direct the requests through index.php
+RewriteRule .* index.php [QSA,L]
+
