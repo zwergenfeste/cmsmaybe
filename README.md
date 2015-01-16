@@ -22,7 +22,7 @@ Quick Overview
     *  Secure
     *  Fast
 
-- Just do with the code what you want, it is free as in freedom and open source.
+- Just do with the code what you want, it is free as in freedom.
 - CMSMayBe does not need a database - it is just files.
 - Templates are plain HTML files with content tags/placeholders.
 - CMSMayBe has its own router and does this REST-thingy.
