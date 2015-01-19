@@ -3,7 +3,14 @@ Options -Indexes
 
 # configure error page
 # change according to Basedir
-ErrorDocument 404 /404
+ErrorDocument 404 /error/404
+ErrorDocument 401 /error/401
+ErrorDocument 403 /error/403
+ErrorDocument 404 /error/404
+ErrorDocument 405 /error/405
+ErrorDocument 500 /error/500
+ErrorDocument 502 /error/502
+ErrorDocument 503 /error/503
 
 # turn on expires and set default to 0
 <IfModule mod_expires.c>
