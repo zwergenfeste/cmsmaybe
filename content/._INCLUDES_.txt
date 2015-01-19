@@ -17,7 +17,7 @@
 
 [HEADTITLE]
 {*}
-CMSMayBe - A open source file based micro CMS
+CMSMayBe - A open source file-based micro CMS
 #END#
 
 [METADESCRIPTION]
@@ -29,7 +29,7 @@ files. It tries to be simple, accessible, comprehensible, secure and fast.">
 
 [METAKEYWORD]
 {*}
-<meta name="keyword" content="CMSMayBe, CMS, file based, flat file, micro CMS, fast, easy, slim, 
+<meta name="keyword" content="CMSMayBe, CMS, file, based, file-based, micro, flat-file, flat, micro CMS, fast, easy, slim, 
 open source file-based micro CMS, minimalistic, no-db, open source, html, css, php">
 #END#
 

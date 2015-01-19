@@ -275,12 +275,23 @@ $configs['mshint_file'] = "._MSWarning_";
 # resource not found file
 #
 # default: $configs['resource_not_found'] = "404";
-$configs['resource_not_found'] = "404";
+$configs['resource_not_found'] = "error/404";
 #
 # resource not found content if file not found
 #
 # default: $configs['rnf_error'] = "<br><br><div class='alert alert-danger' role='alert'><b>ERROR 404:</b> The requested resource [PAGE] does not exist!</div><br><br>\n";
 $configs['rnf_error'] = "<br><br><div class='alert alert-danger' role='alert'><b>ERROR 404:</b> The requested resource [PAGE] does not exist!</div><br><br>\n";
+
+#
+# resource not found file
+#
+# default: $configs['resource_not_found'] = "404";
+$configs['auth_required'] = "error/401";
+#
+# resource not found content if file not found
+#
+# default: $configs['rnf_error'] = "<br><br><div class='alert alert-danger' role='alert'><b>ERROR 404:</b> The requested resource [PAGE] does not exist!</div><br><br>\n";
+$configs['are_error'] = "<br><br><div class='alert alert-danger' role='alert'><b>ERROR 401:</b> Authorization required for [PAGE]!</div><br>\n";
 
 #
 # login form file
@@ -764,6 +775,11 @@ class Router extends Core
 	if($req['status'] == '404')
 	{
 	    $uri = Config::get('resource_not_found');
+	}
+
+	if($req['status'] == '401')
+	{
+	    $uri = Config::get('auth_required');
 	}
 
 	// get rid of the / at the end
