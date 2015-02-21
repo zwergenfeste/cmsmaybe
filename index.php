@@ -822,8 +822,11 @@ class Router extends Core
 	    // set that a file was found
 	    $r_found = 1;
 
-	    // if auth is needed change file
-	    if($file = Config::$Auth->need($file))
+	    // change file if auth is needed
+	    $file = Config::$Auth->need($file);
+
+	    // if auth is needed redirect to ssl if set
+	    if($file == '250')
 	    {
 		// redirect to ssl if set
 		if(Config::get('SSL') == "yes" && explode(':',Browser::get_hostURL(),2)[0] != 'https')
@@ -2428,6 +2431,7 @@ class Core
 	Content::set('[NAME]',Config::get('username'));
 	Content::set('[DEFAULTPAGE]',Config::get('default_page'));
 	Content::set('[LOGINTEXT]',Config::get('login_text'));
+        Content::set('[LANG]',Config::get('language'));
 
 	Content::setFromFile('[MSHINT]',Config::genF('mshint_file'));
 	Content::setFromFile('[PAGESIGN]',Config::genF('page_sign_file'));
