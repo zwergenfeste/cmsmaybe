@@ -1267,10 +1267,10 @@ class Menu extends Core
 	    }
 
 	    // if level 1 start new href base
-	    // cant be #ref and will start with baseurl
 	    if($current['0'] == 1)
 	    {
-	        return Config::get('basedir').$current[1];
+		$last[1] = Config::get('basedir');
+		$last[0] = 1;
 	    }
 
 	    // removes #ref last link
