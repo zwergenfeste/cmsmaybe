@@ -16,13 +16,16 @@ class Minify extends Core
 	$this->css_files = array( Config::get('theme_folder').'/Treefault/prism/prism.css',
 				  Config::get('theme_folder').'/Treefault/bootstrap/bootstrap.min.css',
 				  Config::get('theme_folder').'/Treefault/Treefault.css',
+				  Config::get('plugin_folder').'/SENDMAIL/SENDMAIL.css',
 				  Config::get('theme_folder').'/'.Config::get('theme').'/'.Config::get('theme').'.css');
 
 	$this->js_files = array( Config::get('theme_folder').'/Treefault/jquery/jquery-1.11.0.min.js',
+				 Config::get('plugin_folder').'/SENDMAIL/validate/jquery.validate.min.js',
 				 Config::get('theme_folder').'/Treefault/jquery/toc.min.js',
 				 Config::get('theme_folder').'/Treefault/prism/prism.js',
 				 Config::get('theme_folder').'/Treefault/bootstrap/bootstrap.min.js',
 				 Config::get('theme_folder').'/Treefault/Treefault.js',
+				 Config::get('plugin_folder').'/SENDMAIL/SENDMAIL.js',
 				 Config::get('theme_folder').'/'.Config::get('theme').'/'.Config::get('theme').'.js');
     }
 

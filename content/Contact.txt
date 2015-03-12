@@ -27,13 +27,13 @@
 <div class="col-md-offset-3 col-md-6 ui page grid">
   <div class="row">
     <div class="column">
-      [MAILERMSG]
+      <div id="mailermesg">[MAILERMSG]</div>
     </div>
   </div>
 
   <div class="row">
-    <form id="contactform" class="ui form segment column" role="form" method="post" action="Contact/sendmail">
-	<div id="waiter"></div>
+    <form id="mailerform" class="ui form segment column" role="form" method="post" action="Contact/ajax/sendmail">
+	<div id="mailerwait"><div><div class="spin-circle"></div></div></div>
 	<fieldset>
 	    <input type="hidden" name="CFsubject" value="[CMSMayBe: Contact-Form]">
 	    <div class="form-group field">
@@ -49,7 +49,7 @@
 		<textarea type="text" class="form-control" name="CFmesg" maxlength="300" rows="5" placeholder="Message" required></textarea>
 	    </div>
 	    <div class="form-group field">
-		<input type="submit" class="btn btn-default ui button" value="Submit">
+		<input type="submit" class="submit btn btn-default ui button" value="Submit">
 	    </div>
 	</fieldset>
     </form>

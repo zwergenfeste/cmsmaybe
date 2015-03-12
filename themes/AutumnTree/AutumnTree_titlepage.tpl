@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="[LANG]">
     <head>
         <meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -34,7 +34,7 @@
 		    </div>
 		</div>
 		<div id="tp-topsub" class="fadeIn">
-		    <h2>A open source file-based micro "CMS"</h2>
+		    <h2>A simple flat file micro "CMS"</h2>
 		    <a class="tp-btn btn btn-lg" href="Home" role="button">Read More<i class="file"></i></a>
 		    <a class="tp-btn btn btn-lg" href="https://github.com/zwergenfeste/cmsmaybe/archive/master.zip" role="button">Download<i class="download"></i></a>
 		</div>

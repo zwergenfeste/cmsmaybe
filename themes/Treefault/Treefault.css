@@ -309,6 +309,10 @@ a.pofla {
   padding-top: 7px;
 }
 
+.btn {
+  outline: none !important;
+}
+
 .linkbtn {
   border-color: #428bca;
   margin: 0 9px 9px 0;

@@ -10,27 +10,24 @@
 <div id="mainbanner" class="row">
     <div class="jumbotron ui huge message">
 	<h1>CMSMayBe <small>Version [VERSION]</small></h1>
-	<p><i>A open source file-based micro "CMS"</i></p>
+	<p><i>A small, simple, flat file "CMS".</i></p>
     </div>
 </div>
 #END#
 
 [HEADTITLE]
 {*}
-CMSMayBe - A open source file-based micro CMS
+CMSMayBe - A small, simple, flat file CMS.
 #END#
 
 [METADESCRIPTION]
 {*}
-<meta name="description" content="CMSMayBe - A open source file-based micro CMS helping you 
-build simple sites and display content without the overhead of a database! Just add / edit / remove
-files. It tries to be simple, accessible, comprehensible, secure and fast.">
+<meta name="description" content="CMSMayBe - A open source file based micro CMS helping you build simple sites without the overhead of a database!">
 #END#
 
 [METAKEYWORD]
 {*}
-<meta name="keyword" content="CMSMayBe, CMS, file, based, file-based, micro, flat-file, flat, micro CMS, fast, easy, slim, 
-open source file-based micro CMS, minimalistic, no-db, open source, html, css, php">
+<meta name="keyword" content="CMSMayBe, CMS, file, based, flat, micro, fast, easy, slim, small, simple, content, management, system, minimalistic, no-db, open source, html, css, php">
 #END#
 
 [FOOTER]
