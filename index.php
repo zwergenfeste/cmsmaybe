@@ -2297,24 +2297,24 @@ class Auth extends Core
 	    }
 	}
 
+	// set or unset auth fail message
+	if($this->auth_status == 'auth_error')
+	{
+	    if(Content::get('[AUTHMSG]') == '')
+	    {
+		Content::set('[AUTHMSG]',Config::get('lef_error'));
+	    }
+	}
+	else
+	{
+	    Content::set('[AUTHMSG]','');
+	}
+
 	if($need_auth == 1)
 	{
+	    // set need auth status
 	    if($this->auth_status != 'auth_ok' || (Config::get('role_based') == 'yes' && !in_array($need_role,Config::get('account_role'))))
 	    {
-		// set or unset auth fail message
-		if($this->auth_status == 'auth_error')
-		{
-		    if(Content::get('[AUTHMSG]') == '')
-		    {
-			Content::set('[AUTHMSG]',Config::get('lef_error'));
-		    }
-		}
-		else
-		{
-		    Content::set('[AUTHMSG]','');
-		}
-
-		// set need auth status
 		$file = 250;
 	    }
 	}

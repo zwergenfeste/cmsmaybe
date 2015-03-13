@@ -68,7 +68,7 @@ CMSMayBe - A small, simple, flat file CMS.
 
 [AUTHMSG]
 {*}
-<div class="alert alert-danger ui error message" role="alert"><b>ERROR2:</b> username or password is invalid!</div>
+<div class="alert alert-danger ui error message" role="alert"><b>ERROR:</b> username or password is invalid!</div>
 #END#
 
 [AUTHFORM]
