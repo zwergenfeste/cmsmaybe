@@ -2003,7 +2003,7 @@ class Config
                 // add file/folder selection order for roles
 		foreach($roles as $ro)
 		{
-		    $lex .= '/'.$ro;
+		    $lex = '/'.$ro;
 
 		    array_push($sa, $pa.$lex.'/'.$r,$pa.$lex.'/'.$r.'/'.$r,$pa.$lex.'/'.$s,$pa.$lex.'/'.$s.'/'.$r);
 		}
@@ -2175,7 +2175,7 @@ class Auth extends Core
 
 		if(array_key_exists('ROLE',$r))
 		{
-		    $role[] = $a['ROLE'];
+		    $role[] = explode(',',$a['ROLE'])[0];
 		}
 	    }
 
