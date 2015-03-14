@@ -64,7 +64,7 @@ $configs['nav_lnkt_cls'] = "";
 #
 # SSL
 #
-# use HTTPS for auth and force redirects to https
+# use HTTPS - force redirects to https
 #
 $configs['SSL'] = 'yes';
 
@@ -665,14 +665,14 @@ class Browser
     public static function get_hostURL($ssl = 0)
     {
         $host = stripslashes(htmlspecialchars($_SERVER['HTTP_HOST'],ENT_QUOTES,'UTF-8'));
-        $prot = stripslashes(htmlspecialchars($_SERVER['HTTPS'],ENT_QUOTES,'UTF-8'));
+        $prot = stripslashes(htmlspecialchars(@$_SERVER['HTTPS'],ENT_QUOTES,'UTF-8'));
 
 	if($ssl != 0)
 	{
 	    $prot = '1';
 	}
 
-	if($prot != "")
+	if($prot != "" && $prot != "off")
 	{
 	    $prot = 'https';
 	}
@@ -828,12 +828,6 @@ class Router extends Core
 	    // if auth is needed redirect to ssl if set
 	    if($file == '250')
 	    {
-		// redirect to ssl if set
-		if(Config::get('SSL') == "yes" && explode(':',Browser::get_hostURL(),2)[0] != 'https')
-		{
-		    header("Location: ".Config::get('host_URL').$basedir.$uri);
-		    exit;
-		}
 	    }
 		
 	    // if the requested resource is a file set route to file
@@ -2356,10 +2350,6 @@ class Core
 
     public function set_defaults($configs)
     {
-	// dont know where to put... at the beginning should be ok
-        session_cache_limiter(false);
-	session_start();
-
 	// quick way to solve mime type problems
 	ini_set('default_mimetype', '');
 
@@ -2371,7 +2361,6 @@ class Core
 
 	// add configs and initial contents, define additional useful configs
 	$this->def['configs'] = $configs;
-	$this->def['configs']['basedir'] = Browser::get_basedir();
 	$this->def['contents']['[VERSION]'] = $this->version;
     }
 
@@ -2380,7 +2369,25 @@ class Core
 	// put configs in place
 	Config::init($this->def['configs']);
 	Content::init($this->def['contents']);
-	
+
+	/*
+	    no interaction to this point!
+	*/
+
+	// redirect to HTTPS if set
+	if(Config::get('SSL') == "yes" && explode(':',Browser::get_hostURL(),2)[0] != 'https')
+	{
+	    header("Location: ".Browser::get_hostURL(1).Browser::get_URI());
+	    exit;
+	}
+
+	// start session after redirect to HTTPS
+	session_cache_limiter(false);
+	session_start();
+
+	//set basedir before all
+	Config::set('basedir',Browser::get_basedir());
+
 	// init all classes and add them to class Config so they can be altered directly
 	Config::$Lang = new Language;
         Config::$Menu = new Menu;
@@ -2486,7 +2493,7 @@ $p = new Core;
 // add default configurations to function core and starts phpsession
 $p->set_defaults($configs);
 
-// load classes and set configs
+// load classes, set configs and redirect to HTTPS before anything else
 $p->init_objects();
 
 // exec plugins, so they can change paths before getting contents of files
