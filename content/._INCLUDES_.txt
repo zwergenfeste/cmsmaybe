@@ -75,7 +75,7 @@ CMSMayBe - A small, simple, flat file CMS.
 {*}
 <br>
 
-[AUTHMSG]
+<div id="authmsg">[AUTHMSG]</div>
 
 <div class="two column stackable ui page grid">
 <div id="pa-login" class="col-md-4 col-md-offset-3 col-sm-6 col-sm-offset-2 ui fluid column">

@@ -283,14 +283,14 @@ $configs['resource_not_found'] = "error/404";
 $configs['rnf_error'] = "<br><br><div class='alert alert-danger' role='alert'><b>ERROR 404:</b> The requested resource [PAGE] does not exist!</div><br><br>\n";
 
 #
-# resource not found file
+# auth required file
 #
-# default: $configs['resource_not_found'] = "404";
+# default: $configs['auth_required'] = "404";
 $configs['auth_required'] = "error/401";
 #
-# resource not found content if file not found
+# auth required content if file not found
 #
-# default: $configs['rnf_error'] = "<br><br><div class='alert alert-danger' role='alert'><b>ERROR 404:</b> The requested resource [PAGE] does not exist!</div><br><br>\n";
+# default: $configs['are_error'] = "<br><br><div class='alert alert-danger' role='alert'><b>ERROR 401:</b> Authorization required for [PAGE]!</div><br>\n";
 $configs['are_error'] = "<br><br><div class='alert alert-danger' role='alert'><b>ERROR 401:</b> Authorization required for [PAGE]!</div><br>\n";
 
 #
@@ -774,12 +774,12 @@ class Router extends Core
 
 	if($req['status'] == '404')
 	{
-	    $uri = Config::get('resource_not_found');
+	    return array('T' => 'dyn', 'resource' => '0');
 	}
 
 	if($req['status'] == '401')
 	{
-	    $uri = Config::get('auth_required');
+	    return array('T' => 'dyn', 'resource' => '241');
 	}
 
 	// get rid of the / at the end
@@ -791,10 +791,16 @@ class Router extends Core
 	// check for auth
 	if(substr($uri,-5) == '/auth' && $req['method'] == 'POST')
 	{
-	    Config::$Auth->go();
+	    $status = Config::$Auth->go();
 
-	    // remote /auth 
+	    // remove /auth 
 	    $uri = substr($uri,0,-5);
+
+	    if(substr($uri,-5) == '/ajax')
+	    {
+	    	echo json_encode(array('status' => $status,'msg' => Content::get('[AUTHMSG]')));
+		exit;
+	    }
 
 	    // go to the originaly requested route
 	    header("Location: ".Config::get('host_URL').$basedir.$uri);
@@ -807,6 +813,11 @@ class Router extends Core
 	    // unauth / logout
 	    Config::$Auth->del();
 
+	    if(substr($uri,-12) == 'ajax/un_auth')
+	    {
+		exit;
+	    }
+
 	    // redirect to the default page
 	    header("Location: ".Config::get('host_URL').$basedir.Config::get('default_page'));
 	    exit;
@@ -814,31 +825,26 @@ class Router extends Core
 
 	// get the file corresponding to the request
 	// working with the file is safer
-	$file = Config::setF($uri);
-
-	// go on if a correspinding file was found
-	if($file != FALSE)
+	if($file = Config::setF($uri))
 	{
-	    // set that a file was found
-	    $r_found = 1;
-
 	    // change file if auth is needed
-	    $file = Config::$Auth->need($file);
-
-	    // if auth is needed redirect to ssl if set
-	    if($file == '250')
+	    if(Config::$Auth->need($file))
 	    {
+		header("HTTP/1.0 401 Unauthorized");
+
+	        return array('T' => 'dyn', 'resource' => 199);
 	    }
-		
+
 	    // if the requested resource is a file set route to file
 	    if($file == $uri)
 	    {
 		return array('T' => 'file', 'file' => $file);
 	    }
-	}
 
+	    return array('T' => 'dyn', 'resource' => $file);
+	}
 	// if no file was found check in menu
-	if($r_found == 0)
+	else
 	{
 	    $blen = strlen($basedir);
 
@@ -847,31 +853,15 @@ class Router extends Core
 	    {
 	        if(strpos($l['href'],"$uri", -0) == $blen)
 	        {
-		    $file = 200;
-		    $r_found = 1;
-		    break;
+	            return array('T' => 'dyn', 'resource' => 100);
 	        }
 	    }
 	}
 
 	// if resource still not found return error
-	if($r_found == 0)
-	{
-	    header("HTTP/1.0 404 Not Found");
+	header("HTTP/1.0 404 Not Found");
 
-	    $rnf = Config::genF('resource_not_found');
-
-	    if(file_exists($rnf))
-	    {
-		$file = $rnf;
-	    }
-	    else
-	    {
-		$file = 0;
-	    }
-	}
-
-	return array('T' => 'dyn', 'resource' => $file);
+	return array('T' => 'dyn', 'resource' => 0);
     }
 
     // checks request against static and dynamic routes an gives back route array
@@ -912,32 +902,29 @@ class Router extends Core
 
 	if($route['T'] == 'dyn')
 	{
-	    // resource was not found and resource not found file too
+	    // resource was not found
 	    if($route['resource'] === 0)
 	    {
-		// return default resource not found message
-		return Config::get('rnf_error');
+		return Content::get('[RNFMSG]');
+	    }
+	    // auth required
+	    elseif($route['resource'] === 241)
+	    {
+		return Content::get('[ARFMSG]');
 	    }
 	    // resource only in menu
-	    elseif($route['resource'] === 200)
+	    elseif($route['resource'] === 100)
 	    {
 		// do nothing
 	    }
 	    // send login form
-	    elseif($route['resource'] === 250)
+	    elseif($route['resource'] === 199)
 	    {
-		// return default login form
-		if(Content::get('[AUTHFORM]') == '')
-		{
-		    return Config::get('lf_error');
-		}
-
 		return Content::get('[AUTHFORM]');
 	    }
 	    // no files at all were found
 	    elseif($route['resource'] === 99)
 	    {
-		// return default content
 		return Config::get('default_content');
 	    }
 
@@ -2246,11 +2233,15 @@ class Auth extends Core
 	if($this->verify_pw($usr,$pw) == true)
 	{
 	    Browser::set_s('auth','auth_ok');
+	    $status = 'auth_ok';
 	}
 	else
 	{
 	    Browser::set_s('auth','auth_error');
+	    $status = 'auth_error';
 	}
+
+	return $status;
     }
 
     // checks if a file needs auth and changes it if needed
@@ -2292,14 +2283,7 @@ class Auth extends Core
 	}
 
 	// set or unset auth fail message
-	if($this->auth_status == 'auth_error')
-	{
-	    if(Content::get('[AUTHMSG]') == '')
-	    {
-		Content::set('[AUTHMSG]',Config::get('lef_error'));
-	    }
-	}
-	else
+	if($this->auth_status != 'auth_error')
 	{
 	    Content::set('[AUTHMSG]','');
 	}
@@ -2309,11 +2293,11 @@ class Auth extends Core
 	    // set need auth status
 	    if($this->auth_status != 'auth_ok' || (Config::get('role_based') == 'yes' && !in_array($need_role,Config::get('account_role'))))
 	    {
-		$file = 250;
+		return TRUE;
 	    }
 	}
 
-	return $file;
+	return FALSE;
     }
 
     // gives back the auth status
@@ -2440,18 +2424,47 @@ class Core
 	Content::set('[LOGINTEXT]',Config::get('login_text'));
         Content::set('[LANG]',Config::get('language'));
 
+	// needed content
+	Content::setFromFile('[AUTHMSG]',Config::genF('login_error_file'));
+	Content::setFromFile('[AUTHFORM]',Config::genF('login_file'));
+	Content::setFromFile('[RNFMSG]',Config::genF('resource_not_found'));
+	Content::setFromFile('[ARFMSG]',Config::genF('auth_required'));
+
+	// not needed content from files
 	Content::setFromFile('[MSHINT]',Config::genF('mshint_file'));
 	Content::setFromFile('[PAGESIGN]',Config::genF('page_sign_file'));
 	Content::setFromFile('[PAGEOPTS]',Config::genF('page_options_file'));
 	Content::setFromFile('[FOOTER]',Config::genF('footer_file'));
 	Content::setFromFile('[HEADER]',Config::genF('header_file'));
-	Content::setFromFile('[AUTHMSG]',Config::genF('login_error_file'));
-	Content::setFromFile('[AUTHFORM]',Config::genF('login_file'));
- 
+
+	// get menu and template
 	Content::set('[MENU]',Config::$Menu->get());
         Content::set('[TEMPLATE]',Config::$Temp->get());
 
+	// set INC
 	Content::setINC(Config::genF('includes_file'));
+
+	// check for empty needed contents after INC
+	if(Content::get('[RNFMSG]') == '')
+	{
+	    Content::set('[RNFMSG]',Config::get('rnf_error'));
+	}
+
+	if(Content::get('[AUTHMSG]') == '')
+	{
+	    Content::set('[AUTHMSG]',Config::get('lef_error'));
+	}
+
+	if(Content::get('[ARFMSG]') == '')
+	{
+	    Content::set('[ARFMSG]',Config::get('are_error'));
+	}
+
+	if(Content::get('[AUTHFORM]') == '')
+	{
+	    Content::set('[AUTHFORM]',Config::get('lf_error'));
+	}
+	Content::set('[AUTHCHGFORM]',Content::get('[AUTHFORM]'));
     }
 
     // calls plugins with function from_router beside from set the content
