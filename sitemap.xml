@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<url>
+  <loc>https://cmsmaybe.org/</loc>
+</url>
+<url>
+  <loc>https://cmsmaybe.org/Home</loc>
+</url>
+<url>
+  <loc>https://cmsmaybe.org/News</loc>
+</url>
+<url>
+  <loc>https://cmsmaybe.org/Documentation</loc>
+</url>
+<url>
+  <loc>https://cmsmaybe.org/Download</loc>
+</url>
+<url>
+  <loc>https://cmsmaybe.org/Contact</loc>
+</url>
+<url>
+  <loc>https://cmsmaybe.org/Contact/Donations</loc>
+</url>
+<url>
+  <loc>https://cmsmaybe.org/RSS</loc>
+</url>
+</urlset>

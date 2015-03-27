@@ -222,6 +222,10 @@ textarea[type=text] {
   min-height: 150px;
 }
 
+.fadeR {
+  display: none !important;
+}
+
 #pa-usrinfo {
   padding-top: 30px;
   font-size: 12px;
@@ -427,7 +431,7 @@ li p {
   border-color: #eeeeee;
 }
 
-.jumbotron h1 {
+.jumbotron h1, .jumbotron h2 {
   border: none;
   margin-bottom: 0px;
 }

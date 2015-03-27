@@ -32,7 +32,7 @@
   </div>
 
   <div class="row">
-    <form id="mailerform" class="ui form segment column" role="form" method="post" action="Contact/ajax/sendmail">
+    <form id="mailerform" class="ui form segment column" role="form" method="post" action="Contact/sendmail">
 	<div id="mailerwait"><div><div class="spin-circle"></div></div></div>
 	<fieldset>
 	    <input type="hidden" name="CFsubject" value="[CMSMayBe: Contact-Form]">

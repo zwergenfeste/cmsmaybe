@@ -184,10 +184,6 @@ li.dropdown > a:focus {
   TITLEPAGE
 */
 
-.fadeR {
-  display: none !important;
-}
-
 #tp-content {
   padding-top: 90px;
 }

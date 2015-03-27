@@ -274,6 +274,10 @@ a.pofla {
   line-height: 38px;
 }
 
+.fadeR {
+  display: none !important;
+}
+
 #content {
   padding: 60px 0 100px;
 }
