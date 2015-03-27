@@ -29,8 +29,15 @@ class SENDMAIL extends Core
             $ajax = false;
 	}
 
-        $header = "From: $this->rcpt" . "\r\n" .
-                  "Reply-To: $this->rcpt" . "\r\n" .
+	$rcpt = Config::get('sendmail_rcpt');
+
+	if($rcpt == '')
+	{
+	    $rcpt = $this->rcpt;
+	}
+
+        $header = "From: $rcpt" . "\r\n" .
+                  "Reply-To: $rcpt" . "\r\n" .
                   'X-Mailer: PHP/' . phpversion();
 
 	$name = Browser::get_r('CFname');
@@ -41,7 +48,7 @@ class SENDMAIL extends Core
 
 	$msg = "$name\n$email\n$phone\n\n$mesg";
 
-	if(mail($this->rcpt,$subject,$msg))
+	if(mail($rcpt,$subject,$msg))
 	{
 	    if($ajax)
 	    {
