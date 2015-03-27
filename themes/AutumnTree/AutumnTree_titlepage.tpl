@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="[LANG]">
     <head>
-        <meta charset="utf-8">
+	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	[METADESCRIPTION]
@@ -28,17 +28,18 @@
 			</div>
 		    </div>
 		    <div id="tp-text" class="tscale">
-			<div class="late bounceIn">CMS</div>
-			<div class="later bounceIn">May</div>
-			<div class="latest bounceIn">Be</div>
+			<h1 class="late bounceIn">CMS</h1>
+			<h1 class="later bounceIn">May</h1>
+			<h1 class="latest bounceIn">Be</h1>
 		    </div>
 		</div>
+	    </a>
 		<div id="tp-topsub" class="fadeIn">
 		    <h2>A simple flat file micro "CMS"</h2>
+		    <h2 class="fadeR">A open source file-based micro "CMS"</h2>
 		    <a class="tp-btn btn btn-lg" href="Home" role="button">Read More<i class="file"></i></a>
 		    <a class="tp-btn btn btn-lg" href="https://github.com/zwergenfeste/cmsmaybe/archive/master.zip" role="button">Download<i class="download"></i></a>
 		</div>
-	    </a>
         </header>
 
         <article id="tp-content" class="row fadeIn">
@@ -46,22 +47,28 @@
 		<div class="col-lg-4 tp-cols">
 		    <i class="cico tp-si"><i class="tp-si2"></i></i>
 		    <h2>Simple</h2>
+		    <p>
 		    No doctor title is needed to use CMSMayBe. 
 		    It is intuitive and easily to use.
 		    Editing files and a basic knowledge of HTML is all it takes for.
+		    </p>
 		</div>
 		<div class="col-lg-4 tp-cols">
 		    <i class="cico tp-fx"></i>
 		    <h2>Flexible</h2>
+		    <p>
 		    CMSMayBe is designed to be as flexible as possible. 
 		    While its core is kept minimalistic, almost anything can be easily added or changed.
+		    </p>
 		</div>
 		<div class="col-lg-4 tp-cols">
 		    <i class="cico tp-oc"></i>
 		    <h2>Open Source</h2>
+		    <p>
 		    CMSMayBe is completely free as in freedom! 
 		    It is released under the AGPL license.
 		    The source code is available on GitHub.
+		    </p>
 		</div>
 	    </div>
         </article>

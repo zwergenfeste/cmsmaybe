@@ -184,6 +184,10 @@ li.dropdown > a:focus {
   TITLEPAGE
 */
 
+.fadeR {
+  display: none !important;
+}
+
 #tp-content {
   padding-top: 90px;
 }
@@ -266,11 +270,12 @@ li.dropdown > a:focus {
   float: left;
 }
 
-#tp-text div {
+#tp-text h1 {
   float: left;
   font-size: 100px;
   color: #f0633a;
   line-height: 220px;
+  margin: 0;
 }
 
 .tp-cols h2, .tp-cols i {

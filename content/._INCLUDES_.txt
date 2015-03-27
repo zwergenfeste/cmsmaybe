@@ -3,31 +3,44 @@
 <div id="mainbanner" class="row">
     <div class="jumbotron ui huge message">
 	<h1>CMSMayBe <small>Version [VERSION]</small></h1>
-	<p><i>A open source micro "CMS" helping you build simple sites without the overhead of a database!</i></p>
+	<h2><i>A open source micro "CMS" helping you build simple sites without the overhead of a database!</i></h2>
     </div>
 </div>
 #AND#
 <div id="mainbanner" class="row">
     <div class="jumbotron ui huge message">
 	<h1>CMSMayBe <small>Version [VERSION]</small></h1>
-	<p><i>A small, simple, flat file "CMS".</i></p>
+	<h2><i>A small, simple, flat file "CMS".</i></h2>
+	<h2 class="fadeR"><i>A open source file-based micro "CMS".</i></h2>
     </div>
 </div>
 #END#
 
 [HEADTITLE]
 {*}
-CMSMayBe - A small, simple, flat file CMS.
+CMSMayBe - A small, simple, flat file CMS
+#AND#
+CMSMayBe - A open source file based micro CMS
 #END#
+
++[METAKEYWORD]
++{*}
++
++#END#
+
 
 [METADESCRIPTION]
 {*}
-<meta name="description" content="CMSMayBe - A open source file based micro CMS helping you build simple sites without the overhead of a database!">
+<meta name="description" content="CMSMayBe - A open source flat file micro CMS helping you build simple sites without the overhead of a database!">
+#AND#
+<meta name="description" content="CMSMayBe - A open source file-based micro CMS helping you build simple sites and display content without the overhead of a database! Just add / edit / remove files. It tries to be simple, accessible, comprehensible, secure and fast.">
 #END#
 
 [METAKEYWORD]
 {*}
-<meta name="keyword" content="CMSMayBe, CMS, file, based, flat, micro, fast, easy, slim, small, simple, content, management, system, minimalistic, no-db, open source, html, css, php">
+<meta name="keywords" content="CMSMayBe, CMS, file, based, flat, micro, fast, easy, slim, small, simple, content, management, system, minimalistic, no-db, open source, html, css, php">
+#AND#
+<meta name="keywords" content="CMSMayBe, CMS, file based, flat file, micro CMS, fast, easy, slim, open source file-based micro CMS, minimalistic, no-db, open source, html, css, php, content management, open, free">
 #END#
 
 [FOOTER]
@@ -49,7 +62,7 @@ CMSMayBe - A small, simple, flat file CMS.
   <div class="po_icons">
     <a class="pogit tooltips" data-toggle="tooltip" data-placement="top" href="https://github.com/zwergenfeste/cmsmaybe" title="Fork on GitHub" target="_blank"><span>Fork on GitHub</span></a>
     <a class="pocmb tooltips" data-toggle="tooltip" data-placement="top" href="https://cmsmaybe.org" title="Visit the project site" target="_blank"><span>CMSMayBe</span></a>
-    <a class="pofla tooltips" data-toggle="tooltip" data-placement="top" href="https://flattr.com/submit/auto?user_id=zerg&url=http://cmsmaybe.org&title=CMSMayBe&description=A%20minimalistic%20CMS%20helping%20you%20build%20simple%20sites%20without%20a%20database!&language=en_GB&tags=cms,programming&category=text" title="Flattr this" target="_blank"><span>Flattr</span></a>
+    <a class="pofla tooltips" data-toggle="tooltip" data-placement="top" href="https://flattr.com/submit/auto?user_id=zerg&amp;url=http://cmsmaybe.org&amp;title=CMSMayBe&amp;description=A%20minimalistic%20CMS%20helping%20you%20build%20simple%20sites%20without%20a%20database!&amp;language=en_GB&amp;tags=cms,programming&amp;category=text" title="Flattr this" target="_blank"><span>Flattr</span></a>
     <a class="potwi tooltips" data-toggle="tooltip" data-placement="top" href="https://twitter.com/CMSMayBe" title="Follow on Twitter" target="_blank"><span>Twitter</span></a>
     <a class="porss tooltips" data-toggle="tooltip" data-placement="top" href="https://cmsmaybe.org/RSS" title="Read the RSS feed" target="_blank"><span>RSS</span></a>
   </div>

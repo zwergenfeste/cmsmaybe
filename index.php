@@ -650,14 +650,14 @@ class Browser
     // get available browser languages
     public static function get_lang()
     {
-	$lang = explode(",",stripslashes(htmlspecialchars($_SERVER['HTTP_ACCEPT_LANGUAGE'],ENT_QUOTES,'UTF-8')));
+	$lang = explode(",",stripslashes(htmlspecialchars(@$_SERVER['HTTP_ACCEPT_LANGUAGE'],ENT_QUOTES,'UTF-8')));
 	return $lang;
     }
 
     // get browser, etc. information
     public static function get_agent()
     {
-        $agent = stripslashes(htmlspecialchars($_SERVER['HTTP_USER_AGENT'],ENT_QUOTES,'UTF-8'));
+        $agent = stripslashes(htmlspecialchars(@$_SERVER['HTTP_USER_AGENT'],ENT_QUOTES,'UTF-8'));
 	return $agent;
     }
 
@@ -690,7 +690,7 @@ class Browser
     {
 	$agent = Browser::get_agent();
 
-	if(strpos("MSIE", $agent) || strpos("Windows", $agent))
+	if(strpos($agent,"MSIE") || strpos($agent,"Windows"))
 	{
 	    return 1;
 	}
@@ -1673,7 +1673,7 @@ class Content
 
 	    $k = Config::select_item_s('inc_'.$page.'_'.$m[0],$car);
 
-	    self::set($m[0],$car[$k]);
+	    self::set($m[0],trim($car[$k]));
 	}
     }
 }

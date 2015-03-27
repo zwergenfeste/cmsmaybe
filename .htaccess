@@ -45,7 +45,7 @@ RewriteRule (^\.|/\.) - [R=404,L]
 
 # Exclude the content and themes directories from redirecting 
 # through index.php
-RewriteRule ^(content|themes)($|/) - [L]
+RewriteRule ^(sitemap.xml|robots.txt|content|themes)($|/) - [L]
 
 # For anything else direct the requests through index.php
 RewriteRule .* index.php [QSA,L]
