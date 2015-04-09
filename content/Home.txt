@@ -33,7 +33,7 @@
  	    <p>Just do with the code what you want, it is free as in freedom and open source.</p>
 	    <p>CMSMayBe does not need a database - it is just files.</p>
 	    <p>Templates are plain HTML files with content tags/placeholders.</p>
-	    <p>CMSMayBe has its own router and does this REST-thingy.</p>
+	    <p>CMSMayBe has its own router and semantic URLs.</p>
 	    <p>It has a role based authentication system.</p>
 	    <p>Something like plugins exist. For maximum flexibility they can be registered in different ways.</p>
 	</div>

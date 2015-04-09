@@ -23,7 +23,7 @@ Quick Overview
 - Just do with the code what you want, it is free as in freedom.
 - CMSMayBe does not need a database - it is just files.
 - Templates are plain HTML files with content tags/placeholders.
-- CMSMayBe has its own router and does this REST-thingy.
+- CMSMayBe has its own router and semantic URLs.
 - It has a role based authentication system.
 - Something like plugins exist. For maximum flexibility they can be registered in different ways.
 
