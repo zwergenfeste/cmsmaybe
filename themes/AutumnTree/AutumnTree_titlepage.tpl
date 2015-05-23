@@ -49,7 +49,7 @@
 		    <h2>Simple</h2>
 		    <p>
 		    No doctor title is needed to use CMSMayBe. 
-		    It is intuitive and easily to use.
+		    It is intuitive and easy to use.
 		    Editing files and a basic knowledge of HTML is all it takes for.
 		    </p>
 		</div>

@@ -23,12 +23,6 @@ CMSMayBe - A small, simple, flat file CMS
 CMSMayBe - A open source file based micro CMS
 #END#
 
-+[METAKEYWORD]
-+{*}
-+
-+#END#
-
-
 [METADESCRIPTION]
 {*}
 <meta name="description" content="CMSMayBe - A open source flat file micro CMS helping you build simple sites without the overhead of a database!">

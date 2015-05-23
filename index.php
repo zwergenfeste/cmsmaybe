@@ -2361,7 +2361,7 @@ class Core
 	// redirect to HTTPS if set
 	if(Config::get('SSL') == "yes" && explode(':',Browser::get_hostURL(),2)[0] != 'https')
 	{
-	    header("Location: ".Browser::get_hostURL(1).Browser::get_URI());
+	    header("Location: ".Browser::get_hostURL(1).Browser::get_URI(),TRUE,301);
 	    exit;
 	}
 
