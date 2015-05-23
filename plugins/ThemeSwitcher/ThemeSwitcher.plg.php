@@ -116,19 +116,22 @@ class ThemeSwitcher extends Core
 	    return;
 	}
 
-	// add stuff to template
-	// add placeholder at the end to make things load faster... or something like this
-        // ThemeSwitcher needs jquery... add a line for it if you not already have it on your page
-	Content::add("[TEMPLATE]","</body>","\n".$this->placeholder."\n",0);
-	Content::add("[TEMPLATE]","</head>","\t<link rel='stylesheet' href='".$this->path.$this->name.".css'>\n\t",0);
-	Content::add("[TEMPLATE]","</body>","\t<script type='text/javascript'>var baseurl = '".Config::get('basedir')."';</script>\n\t",0);
-        Content::add("[TEMPLATE]","</body>","\t\t<script type='text/javascript' src='".$this->path.$this->name.".js'></script>\n",0);
+	// add stuff to template only if not run before
+	if(!Content::in_adds($this->placeholder))
+	{
+	    // add placeholder at the end to make things load faster... or something like this
+            // ThemeSwitcher needs jquery... add a line for it if you not already have it on your page
+	    Content::add("[TEMPLATE]","</body>","\n".$this->placeholder."\n",0);
+	    Content::add("[TEMPLATE]","</head>","\t<link rel='stylesheet' href='".$this->path.$this->name.".css'>\n\t",0);
+	    Content::add("[TEMPLATE]","</body>","\t<script type='text/javascript'>var baseurl = '".Config::get('basedir')."';</script>\n\t",0);
+            Content::add("[TEMPLATE]","</body>","\t<script type='text/javascript' src='".$this->path.$this->name.".js'></script>\n",0);
 
-	// set route 
-	Config::addRoute('ThemeSwitcher','GET','CLASS','ThemeSwitcher',"$sel_thm");
+	    // set route 
+	    Config::addRoute('ThemeSwitcher','GET','CLASS','ThemeSwitcher',"$sel_thm");
 
-	// set the placeholder code
-	$this->set_ts_div();
+	    // set the placeholder code
+	    $this->set_ts_div();
+        }
     }
 
     public function from_router($route)

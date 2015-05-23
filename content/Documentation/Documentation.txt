@@ -741,7 +741,7 @@ Following, the sequence by which CMSMayBe works:
 
 The class structure looks like this:
 
-<p><img class="img-responsive" src="[PAGEURL]/classes.png"></p>
+<p><img class="img-responsive" src="/content/Documentation/classes.png"></p>
 <br>
 
 

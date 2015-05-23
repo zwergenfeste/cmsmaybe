@@ -35,7 +35,7 @@ function display_themes(thm_arr,thm_act,path) {
 	if(thm_act == thm) { act = ' TSact'; }
 	else { act = ''; }
 
-	$('#TSbody').append('\t\t\t\t\t<button class="TSradio' + act + '" type="submit" name="selectTheme" id="thmrad' + k + '" value="' + thm + '"><span>' + thm + '</span><img src="' + path + '/' + thm + '/' + thm + '.png"></button>\n')
+	$('#TSbody').append('\t\t\t\t\t<button class="TSradio' + act + '" type="submit" name="selectTheme" id="thmrad' + k + '" value="' + thm + '"><span>' + thm + '</span><img class="TSdefault" src="' + path + '/' + thm + '/' + thm + '.png" alt=""></button>\n')
     });	
 }
 
