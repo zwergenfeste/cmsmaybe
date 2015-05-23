@@ -2,9 +2,9 @@
 
 class SENDMAIL extends Core 
 {
-    private $rcpt = 'info@cmsmaybe.org';
-    private $subject = '[CMSMayBe-Mailer]';
-    private $lang_out = array();
+    public $rcpt = 'info@cmsmaybe.org';
+    public $subject = '[CMSMayBe-Mailer]';
+    public $lang_out = array();
 
     function __construct()
     {
@@ -17,6 +17,7 @@ class SENDMAIL extends Core
 
     function from_router($route)
     {
+	$rcpt = $this->rcpt;
 	$subject = $this->subject;
         $lang = Config::$Lang->get();
 
@@ -27,13 +28,6 @@ class SENDMAIL extends Core
 	else
 	{
             $ajax = false;
-	}
-
-	$rcpt = Config::get('sendmail_rcpt');
-
-	if($rcpt == '')
-	{
-	    $rcpt = $this->rcpt;
 	}
 
         $header = "From: $rcpt" . "\r\n" .

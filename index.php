@@ -95,6 +95,18 @@ $configs['static_routes'] = array(
 );
 
 #
+# static template change
+#
+# set different templates for pages. overwrites configuration in menu
+# fields: 
+# key = page
+# value = template
+#
+$configs['tpl_change'] = array(
+#	'TEST' => 'admin',
+);
+
+#
 # language subfolders
 #
 # if set to yes, it is expected that there are browser-style language
@@ -301,15 +313,15 @@ $configs['login_file'] = "._AUTHFORM_";
 #
 # login form content if login file not exists
 #
-# default: $configs['lf_error'] = "<br><br><form action='[PAGE]/auth' method='post'>
-#        [AUTHMSG]
+# default: $configs['lf_error'] = "<br><br><form id='authform' action='[PAGE]/auth' method='post'>
+#       <div id='authmsg'>[AUTHMSG]</div>
 #	<fieldset>
 #	<input placeholder='Account' name='account' type='text' required>
 #	<input placeholder='Password' name='password' type='password' required>
 #	<input type='submit' value='Login'>
 #	</fieldset>
 #	</form><br><br>\n";
-$configs['lf_error'] = "<br><br><form action='[PAGE]/auth' method='post'>[AUTHMSG]<fieldset><input placeholder='Account' name='account' type='text' required><input placeholder='Password' name='password' type='password' required><input type='submit' value='Login'></fieldset></form><br><br>\n";
+$configs['lf_error'] = "<form id='authform' action='[PAGE]/auth' method='post'><div id='authmsg'>[AUTHMSG]</div><fieldset><input placeholder='Account' name='account' type='text' required><input placeholder='Password' name='password' type='password' required><input type='submit' value='Login'></fieldset></form>\n";
 
 #
 # login text
@@ -318,6 +330,17 @@ $configs['lf_error'] = "<br><br><form action='[PAGE]/auth' method='post'>[AUTHMS
 #
 # default: $config['login_text'] = "Login";
 $configs['login_text'] = "Login";
+
+#
+# authed file
+#
+# default: $configs['authed_file'] = "._AUTHOKFORM_";
+$configs['authed_file'] = "._AUTHOKFORM_";
+#
+# authed content if file not exists
+#
+# default: $configs['af_error'] = "<br><br><div id='authokform'><span>[NAME]</span><span>[USER]</span><span>[ROLE]</span><a class='btn' href='/un_auth'></a><br><br>\n";
+$configs['af_error'] = "<div id='authokform'><span>[NAME]</span><span>[USER]</span><span>[ROLE]</span><a href='/un_auth'><button>Logout</button></a></div>\n";
 
 #
 # auth error message file
@@ -376,6 +399,14 @@ $configs['includes_split_content'] = "#AND#";
 # default: $configs['plugin_def_prio'] = "100";
 $configs['plugin_def_prio'] = "100";
 
+#
+#  plugin properties / settings
+#
+# key = property
+# value = value
+#
+$configs['plg_props']['TEST']['some_setting'] = 'changed by default config';
+
 ##############################################################
 ### classes
 ##############################################################
@@ -422,9 +453,8 @@ class Plugin extends Core
 
 	$plgf = Config::get('plugin_folder');
 	$basedir = Config::get('basedir');
-
 	$plgf_ext = Config::get('plugin_file_ext');
-
+	$plgp = Config::get('plg_props');
 	$list = array();
 
 	if(is_dir($plgf))
@@ -456,6 +486,18 @@ class Plugin extends Core
 			// set some default properties
 			$this->$clsname->name = $clsname;
 			$this->$clsname->path = $basedir.$plgf.$pf.'/';
+
+			// set properties from config file
+			if(count($plgp) > 0)
+			{
+			    if(array_key_exists($clsname,$plgp))
+			    {
+				foreach($plgp[$clsname] as $k => $v)
+				{
+				    $this->$clsname->$k = $v;
+				}
+			    }
+			}
 		    }
 		}
 	    }
@@ -488,8 +530,8 @@ class Plugin extends Core
     // check if auth or spec. role is needed for plugin and update auth paths
     private function auth_and_role($list)
     {
-	$as = Config::$Auth->is();
-	$roles = Config::get('account_role');
+	$as = Config::get('auth_status');
+	$roles = Config::get('account_ROLE');
 	$pf = Config::get('plugin_folder');
 	$af = Config::get('to_auth');
 	$a_list = array();
@@ -532,7 +574,7 @@ class Plugin extends Core
     // load classes method $meth
     private function call_classes($meth) 
     {
-	// make sure all plugins are loaded
+	// make sure plugins are loaded
 	if(count($this->order) == 0)
 	{
 	    $list = $this->load_all();
@@ -788,7 +830,7 @@ class Router extends Core
 	    $uri = substr($uri,0,-1);
 	}
 
-	// check for auth
+	// auth
 	if(substr($uri,-5) == '/auth' && $req['method'] == 'POST')
 	{
 	    $status = Config::$Auth->go();
@@ -796,9 +838,23 @@ class Router extends Core
 	    // remove /auth 
 	    $uri = substr($uri,0,-5);
 
-	    if(substr($uri,-5) == '/ajax')
+	    if(substr($uri,-4) == 'ajax')
 	    {
-	    	echo json_encode(array('status' => $status,'msg' => Content::get('[AUTHMSG]')));
+		$asmsg = '';
+
+		if(!$status)
+		{
+		    $asmsg = Content::get('[AUTHMSG]');
+		    Browser::del_s('auth');
+		}
+		else
+		{
+		    $asmsg = array ('USER' => Config::get('account_USER'),
+				   'ROLE' => Config::get('account_ROLE'),
+				   'NAME' => Config::get('account_NAME'));
+		}
+
+	    	echo json_encode(array('status' => $status,'msg' => $asmsg));
 		exit;
 	    }
 
@@ -807,14 +863,34 @@ class Router extends Core
 	    exit;
 	}
 
-	// check for logout
+	// auth status
+	if(substr($uri,-16) == 'ajax/auth_status')
+	{
+	    $status = Config::get('auth_status');
+
+	    if($status != 'auth_ok')
+	    {
+	        $asret = 0;
+		$asmsg = '';
+	    }
+	    else
+	    {
+		$asret = 1;
+		$asmsg = Config::get('account');
+	    }
+
+	    echo json_encode(array('status' => $asret,'msg' => $asmsg));
+	    exit;
+	}
+
+	// unauth
 	if(substr($uri,-7) == 'un_auth')
 	{
-	    // unauth / logout
-	    Config::$Auth->del();
+	    $status = Config::$Auth->del();
 
 	    if(substr($uri,-12) == 'ajax/un_auth')
 	    {
+	    	echo json_encode(array('status' => 1));
 		exit;
 	    }
 
@@ -1041,7 +1117,7 @@ class Menu extends Core
     // split menu lines and add menu spez (login -> name)
     private function pre_format_links($menu_lines)
     {
-	$is_auth = Config::$Auth->is();
+	$is_auth = Config::get('auth_status');
 
 	foreach ($menu_lines as $line)
 	{
@@ -1069,8 +1145,8 @@ class Menu extends Core
     // check for auth/role or sort out auth/role lines
     private function auth_on_menu($menu_lines)
     {
-	$is_auth = Config::$Auth->is();
-	$roles = Config::get('account_role');
+	$is_auth = Config::get('auth_status');
+	$roles = Config::get('account_ROLE');
 
 	foreach($menu_lines as $li_arr)
 	{
@@ -1740,6 +1816,17 @@ class Template extends Core
 	}
     }
 
+    public function static_tpl_set($tpl_arr,$page)
+    {
+	foreach($tpl_arr as $p => $t)
+	{
+	    if($p == $page)
+	    {
+		$this->set_tpl_name_ext($t);
+	    }
+	}
+    }
+
     // set current page theme name extension to have per page template
     public function set_tpl_name_ext($nameext)
     {
@@ -1976,9 +2063,9 @@ class Config
 		
 		$roles = self::$Auth->roles();
 
-		if(self::$Auth->is() == 'auth_ok')
+		if(self::get('auth_status') == 'auth_ok')
 		{
-		    $roles = self::get('account_role');
+		    $roles = self::get('account_ROLE');
 		}
 
                 // add file/folder selection order for roles
@@ -2137,6 +2224,8 @@ class Auth extends Core
 
 	if(count($f_arr) > 0 && count($mod) > 1)
 	{
+	    $role = array();
+
 	    foreach($f_arr as $al)
 	    {
 		$acc = explode('|',$al);
@@ -2181,7 +2270,7 @@ class Auth extends Core
 		    {
 			continue;
 		    }
-
+		    Config::set('account_'.$key,$val);
 		    Browser::set_s('account_'.$key,$val);
 		}
 
@@ -2195,7 +2284,7 @@ class Auth extends Core
     // logout/clear account and session
     public function del()
     {
-	$account = $this->get_accDet(array('USER' => Config::get('account')));
+	$account = $this->get_accDet(array('USER' => Config::get('account_USER')));
 
 	foreach($account as $key => $val)
 	{
@@ -2207,6 +2296,7 @@ class Auth extends Core
 	    Browser::del_s('account_'.$key);
 	}
 
+	$this->auth_status = '';
 	Browser::del_s('auth');
     }
 
@@ -2232,16 +2322,16 @@ class Auth extends Core
 
 	if($this->verify_pw($usr,$pw) == true)
 	{
+	    $this->auth_status = 'auth_ok';
 	    Browser::set_s('auth','auth_ok');
-	    $status = 'auth_ok';
+	    return TRUE;
 	}
 	else
 	{
+	    $this->auth_status = 'auth_error';
 	    Browser::set_s('auth','auth_error');
-	    $status = 'auth_error';
+	    return FALSE;
 	}
-
-	return $status;
     }
 
     // checks if a file needs auth and changes it if needed
@@ -2275,23 +2365,17 @@ class Auth extends Core
 
 		    if(!is_dir($dir.'/'.$need_role))
 		    {
-			$need_role = Config::get('account_role')[0];
+			$need_role = Config::get('account_ROLE')[0];
 		    }
 		}
 
 	    }
 	}
 
-	// set or unset auth fail message
-	if($this->auth_status != 'auth_error')
-	{
-	    Content::set('[AUTHMSG]','');
-	}
-
 	if($need_auth == 1)
 	{
 	    // set need auth status
-	    if($this->auth_status != 'auth_ok' || (Config::get('role_based') == 'yes' && !in_array($need_role,Config::get('account_role'))))
+	    if($this->auth_status != 'auth_ok' || (Config::get('role_based') == 'yes' && !in_array($need_role,Config::get('account_ROLE'))))
 	    {
 		return TRUE;
 	    }
@@ -2309,11 +2393,11 @@ class Auth extends Core
 	{
 	    $a = Browser::get_s('auth');
 	    $this->auth_status = $a;
-	}
 
-	if($a == 'auth_error')
-	{
-	    Browser::del_s('auth');
+	    if($a == 'auth_error')
+	    {
+		Browser::del_s('auth');
+	    }
 	}
 
 	return $a;
@@ -2361,7 +2445,7 @@ class Core
 	// redirect to HTTPS if set
 	if(Config::get('SSL') == "yes" && explode(':',Browser::get_hostURL(),2)[0] != 'https')
 	{
-	    header("Location: ".Browser::get_hostURL(1).Browser::get_URI(),TRUE,301);
+	    header("Location: ".Browser::get_hostURL(1).Browser::get_URI());
 	    exit;
 	}
 
@@ -2385,11 +2469,15 @@ class Core
 	Config::set('request',Config::$Router->get_request());
 	Config::set('current_page',Config::get('request')['URI']);
 	Config::set('language',Config::$Lang->get());
-	Config::set('account',Browser::get_s('account_USER'));
-	Config::set('account_role',explode(',',Browser::get_s('account_ROLE')));
-	Config::set('username',Browser::get_s('account_NAME'));
 	Config::set('to_auth',array(Config::get('protected_folder')));
 	Config::set('content_dirs',array(Config::get('content_folder'),Config::get('protected_folder'),Config::get('plugin_folder'),Config::get('theme_folder')));
+	Config::set('account_USER',Browser::get_s('account_USER'));
+	Config::set('account_ROLE',explode(',',Browser::get_s('account_ROLE')));
+	Config::set('account_NAME',Browser::get_s('account_NAME'));
+	Config::set('account',array('USER' => Config::get('account_USER'),
+				    'ROLE' => Config::get('account_ROLE'),
+				    'NAME' => Config::get('account_NAME')));
+	Config::set('auth_status',Config::$Auth->is());
 
 	if(Config::get('SSL') != 'no')
 	{
@@ -2417,9 +2505,6 @@ class Core
 	Content::set('[AGENT]',Browser::get_agent());
 	Content::set('[PAGE]',Config::get('basedir').Config::get('current_page'));
 	Content::set('[PAGENAME]',Config::get('current_page'));
-	Content::set('[USER]',Config::get('account'));
-	Content::set('[ROLE]',Browser::get_s('account_ROLE'));
-	Content::set('[NAME]',Config::get('username'));
 	Content::set('[DEFAULTPAGE]',Config::get('default_page'));
 	Content::set('[LOGINTEXT]',Config::get('login_text'));
         Content::set('[LANG]',Config::get('language'));
@@ -2427,6 +2512,7 @@ class Core
 	// needed content
 	Content::setFromFile('[AUTHMSG]',Config::genF('login_error_file'));
 	Content::setFromFile('[AUTHFORM]',Config::genF('login_file'));
+	Content::setFromFile('[AUTHOKFORM]',Config::genF('authed_file'));
 	Content::setFromFile('[RNFMSG]',Config::genF('resource_not_found'));
 	Content::setFromFile('[ARFMSG]',Config::genF('auth_required'));
 
@@ -2439,6 +2525,7 @@ class Core
 
 	// get menu and template
 	Content::set('[MENU]',Config::$Menu->get());
+	Config::$Temp->static_tpl_set(Config::get('tpl_change'),Config::get('current_page'));
         Content::set('[TEMPLATE]',Config::$Temp->get());
 
 	// set INC
@@ -2460,11 +2547,30 @@ class Core
 	    Content::set('[ARFMSG]',Config::get('are_error'));
 	}
 
+	if(Content::get('[AUTHOKFORM]') == '')
+	{
+	    Content::set('[AUTHOKFORM]',Config::get('af_error'));
+	}
+
 	if(Content::get('[AUTHFORM]') == '')
 	{
 	    Content::set('[AUTHFORM]',Config::get('lf_error'));
 	}
-	Content::set('[AUTHCHGFORM]',Content::get('[AUTHFORM]'));
+
+	// contents with auth status
+	$authstatus = Config::get('auth_status');
+
+	if(Config::get('auth_status') == 'auth_ok')
+	{
+	    Content::set('[USER]',Config::get('account_USER'));
+	    Content::set('[ROLE]',Browser::get_s('account_ROLE'));
+	    Content::set('[NAME]',Config::get('account_NAME'));
+	    Content::set('[AUTHCHGFORM]',Content::get('[AUTHOKFORM]'));
+	}
+	else
+	{
+	    Content::set('[AUTHCHGFORM]',Content::get('[AUTHFORM]'));
+	}
     }
 
     // calls plugins with function from_router beside from set the content
@@ -2492,6 +2598,12 @@ class Core
     // generates (alter content, replace placeholders) and displays the page
     public function display_page()
     {
+	// unset auth error message if not used
+	if(Config::get('auth_status') != 'auth_error')
+	{
+	    Content::set('[AUTHMSG]','');
+	}
+
         Config::$Page->generate();
         Config::$Page->display();
     }

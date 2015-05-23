@@ -3,7 +3,7 @@
 class Minify extends Core
 {
     // don't cache, always generate
-    private $onthefly = 0;
+    private $onthefly = 1;
     // put the files together but without any replacement
     private $dontreplace = 1;
     private $expiretime = 9000;
@@ -16,16 +16,13 @@ class Minify extends Core
 	$this->css_files = array( Config::get('theme_folder').'/Treefault/prism/prism.css',
 				  Config::get('theme_folder').'/Treefault/bootstrap/bootstrap.min.css',
 				  Config::get('theme_folder').'/Treefault/Treefault.css',
-				  Config::get('plugin_folder').'/SENDMAIL/SENDMAIL.css',
 				  Config::get('theme_folder').'/'.Config::get('theme').'/'.Config::get('theme').'.css');
 
 	$this->js_files = array( Config::get('theme_folder').'/Treefault/jquery/jquery-1.11.0.min.js',
-				 Config::get('plugin_folder').'/SENDMAIL/validate/jquery.validate.min.js',
 				 Config::get('theme_folder').'/Treefault/jquery/toc.min.js',
 				 Config::get('theme_folder').'/Treefault/prism/prism.js',
 				 Config::get('theme_folder').'/Treefault/bootstrap/bootstrap.min.js',
 				 Config::get('theme_folder').'/Treefault/Treefault.js',
-				 Config::get('plugin_folder').'/SENDMAIL/SENDMAIL.js',
 				 Config::get('theme_folder').'/'.Config::get('theme').'/'.Config::get('theme').'.js');
     }
 
@@ -93,6 +90,11 @@ class Minify extends Core
 	elseif($type == 'js')
 	{
 	    header('Content-type: application/javascript');
+	}
+
+	if(Config::get('minify_onthefly') != '')
+	{
+	    $this->onthefly == Config::get('minify_onthefly');
 	}
 
 	if($this->onthefly == 0)

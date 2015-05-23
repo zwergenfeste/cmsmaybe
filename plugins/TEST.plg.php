@@ -5,6 +5,7 @@ class TEST extends Core
     public $priority = 100;
     public $auth = FALSE;
     public $role = 'admin';
+    public $some_setting = 'default value';
 
     function from_router($route)
     {
@@ -14,6 +15,8 @@ class TEST extends Core
 	$output .= "<p><ul><li>your.domain/TEST</li><li>your.domain/TEST/arg1</li><li>your.domain/TEST/arg1/arg2</li></ul></p>\n";
 	$output .= "<p>For more information (on a fresh installation!) click <a href='".Config::get('basedir')."Documentation'>here</a> else go to <a href='https://cmsmaybe.org/Documentation'>cmsmaybe.org/Documentation</a></p>\n";
 	$output .= "<p><b>Output from the test plugin:</b></p>";
+
+	$output .= '<br><pre>Configuration: '.$this->some_setting.'</pre>';
 
 	if($route['URI'] == "TEST")
 	{

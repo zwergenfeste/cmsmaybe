@@ -4,19 +4,20 @@ class OnePage extends Core
 {
     public $priority = 100;
     public $auth = FALSE;
-
-    # fields: page, contents
-    # fields: real page, CSS ID, CSS class
-
     private $pages = array(
-	array('onepage','contents' => array(
-	    array('Home','home',''),
-	    array('Documentation','docu',''),
-	    array('Download','download',''),
-	    array('Contact','contact',''),
-	    array('Donations','donations',''),
-	    ),
-	),
+	array('main','contents' => array(
+	    array('Welcome','welcome','slidepage image-background'),
+	    array('Intro','introduction','slidepage image-background row'),
+	    array('Idea','idea','slidepage image-background row'),
+	    array('More','more','slidepage image-background row'),
+	    array('Statuten','statuten','slidepage image-background doccontent'),
+	    array('Service-Reglement','reglement','slidepage image-background doccontent'),
+	    array('Servicetext','servicetext','slidepage image-background row'),
+	    array('Services','services','slidepage image-background row'),
+	    array('Membership','membership','slidepage image-background row'),
+	    array('Contact','contact','slidepage image-background row'),
+	    )
+	)
     );
 
     function from_router($route)
@@ -31,10 +32,9 @@ class OnePage extends Core
 		{
 		    Config::set('request',array('URI' => $conts[0],'method' => 'GET','status' => '200'));
 
-		    Content::set('[CONTENT]',Config::$Router->load_content());
-
-		    Config::$Plugin->from_after_content();
-
+		    $this->handle_request();
+		
+		    #$content .= '<section id="'.$conts[1].'" class="'.$conts[2].'"><div class="wap"></div><div class="int">'.Content::get('[CONTENT]').'</div></section>';
 		    $content .= '<section id="'.$conts[1].'" class="'.$conts[2].'"><div>'.Content::get('[CONTENT]').'</div></section>';
 		}
 
@@ -47,7 +47,8 @@ class OnePage extends Core
 
     function from_main()
     {
-	Config::addRoute('onepage','GET','CLASS','OnePage');
+	Config::addRoute('main','GET','CLASS','OnePage');
+	Config::addRoute('','GET','CLASS','OnePage');
     }
 }
 
